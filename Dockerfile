@@ -9,7 +9,7 @@ ENV MAVEN_VERSION=3.8.8 \
 RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \ 
     curl \
-    git \
+    git \ 
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
