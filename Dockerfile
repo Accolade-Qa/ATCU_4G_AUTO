@@ -7,7 +7,7 @@ ENV MAVEN_VERSION=3.8.8 \
 
 # Install required tools, dependencies, and clean up
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    wget \
+    wget \ 
     curl \
     git \
     unzip \
