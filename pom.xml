@@ -75,6 +75,13 @@
             <version>1.26.2</version>
         </dependency>
 
+		<!-- Mail -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>jakarta.mail</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+        
         <dependency>
             <groupId>net.sourceforge.tess4j</groupId>
             <artifactId>tess4j</artifactId>
