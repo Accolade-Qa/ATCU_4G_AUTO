@@ -1,18 +1,13 @@
 package com.aepl.atcu.tests;
 
 import java.awt.AWTException;
-import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.aepl.atcu.base.TestBase;
-import com.aepl.atcu.pages.CommonMethod;
-import com.aepl.atcu.pages.DeviceModelPage;
+import com.aepl.atcu.pages.CommonMethods;
 import com.aepl.atcu.pages.DispachedDevicePage;
 import com.aepl.atcu.pages.LoginPage;
 import com.aepl.atcu.util.ConfigProperties;
@@ -22,7 +17,7 @@ public class DispatchedDevicePageTest extends TestBase {
 	private LoginPage loginPage;
 	private DispachedDevicePage dispatchedDevice;
 	private ExcelUtility excelUtility;
-	private CommonMethod commonMethod;
+	private CommonMethods commonMethod;
 	private By fileInput = By.id("C:\\Users\\Dhananjay Jagtap\\Downloads\\Sample_Dispatch_Sheet.xlsx");
 
 	@Override
@@ -30,7 +25,7 @@ public class DispatchedDevicePageTest extends TestBase {
 	public void setUp() {
 		super.setUp();
 		dispatchedDevice = new DispachedDevicePage(driver);
-		loginPage = new LoginPage(driver);
+		loginPage = new LoginPage(driver, wait);
 		excelUtility = new ExcelUtility();
 		excelUtility.initializeExcel("Dispatched Device");
 	}
@@ -131,10 +126,10 @@ public class DispatchedDevicePageTest extends TestBase {
 	}
 
 	@Test(priority = 6)
-	public void testFileUpload() throws AWTException, InterruptedException {		
-        String directory = "C:\\Users\\Dhananjay Jagtap\\Downloads";
-        String filePrefix = "Sample_Dispatch_Sheet";
+	public void testFileUpload() throws AWTException, InterruptedException {
+		String directory = "C:\\Users\\Dhananjay Jagtap\\Downloads";
+		String filePrefix = "Sample_Dispatch_Sheet";
 
-        dispatchedDevice.uploadFile( directory, filePrefix);
+		dispatchedDevice.uploadFile(directory, filePrefix);
 	}
 }

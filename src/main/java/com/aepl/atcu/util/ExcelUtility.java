@@ -1,113 +1,119 @@
 package com.aepl.atcu.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelUtility {
 
-	private static final Logger logger = LogManager.getLogger(ExcelUtility.class);
+    private static final Logger logger = LogManager.getLogger(ExcelUtility.class);
 
-	private Workbook workbook;
-	private Sheet sheet;
-	private String filePath;
+    private Workbook workbook;
+    private Sheet sheet;
+    private String filePath;
 
-	public void initializeExcel(String sheetName) {
-		filePath = System.getProperty("user.dir") + "/test-results/" + sheetName + ".xlsx";
-		try {
-			File file = new File(filePath);
-			logger.info("Initializing Excel file at path: {}", filePath);
+    private CellStyle headerStyle;
+    private CellStyle passStyle;
+    private CellStyle failStyle;
 
-			if (!file.getParentFile().exists()) {
-				logger.debug("Parent directory does not exist. Creating directories.");
-				file.getParentFile().mkdirs();
-			}
+    public void initializeExcel(String sheetName) {
+        filePath = System.getProperty("user.dir") + "/test-results/" + sheetName + ".xlsx";
+        Path path = Paths.get(filePath);
 
-			if (file.exists() && file.length() > 0) {
-				logger.info("Excel file exists. Loading existing file.");
-				try (FileInputStream fis = new FileInputStream(file)) {
-					workbook = new XSSFWorkbook(fis);
-					sheet = workbook.getSheetAt(0);
-					logger.debug("Loaded existing Excel sheet: {}", sheet.getSheetName());
-				}
-			} else {
-				logger.info("Excel file does not exist. Creating new workbook and sheet.");
-				workbook = new XSSFWorkbook();
-				sheet = workbook.createSheet("Test Results");
-				createHeaderRow();
-				logger.debug("Created new sheet with header row.");
-			}
-		} catch (IOException e) {
-			logger.error("Failed to initialize Excel file: {}", filePath, e);
-			throw new RuntimeException("Failed to initialize Excel file: " + filePath);
-		}
-	}
+        try {
+            Files.createDirectories(path.getParent());
 
-	private void createHeaderRow() {
-		logger.debug("Creating header row.");
-		Row headerRow = sheet.createRow(0);
-		CellStyle headerStyle = workbook.createCellStyle();
-		Font headerFont = workbook.createFont();
-		headerFont.setBold(true);
-		headerFont.setColor(IndexedColors.BLACK.getIndex());
-		headerStyle.setFont(headerFont);
+            if (Files.exists(path) && Files.size(path) > 0) {
+                try (FileInputStream fis = new FileInputStream(filePath)) {
+                    workbook = new XSSFWorkbook(fis);
+                    sheet = workbook.getSheet(sheetName) != null
+                            ? workbook.getSheet(sheetName)
+                            : workbook.createSheet(sheetName);
+                }
+                logger.debug("Loaded existing Excel file: {}", filePath);
+            } else {
+                workbook = new XSSFWorkbook();
+                sheet = workbook.createSheet(sheetName);
+                createHeaderRow();
+                logger.debug("Created new Excel file: {}", filePath);
+            }
 
-		String[] headers = { "Test Case Name", "Expected Message", "Actual Message", "Status" };
-		for (int i = 0; i < headers.length; i++) {
-			Cell cell = headerRow.createCell(i);
-			cell.setCellValue(headers[i]);
-			cell.setCellStyle(headerStyle);
-		}
-		logger.debug("Header row created with columns: {}", String.join(", ", headers));
-	}
+            createStyles();
 
-	public void writeTestDataToExcel(String testCaseName, String expected, String actual, String status) {
-		if (workbook == null || sheet == null) {
-			logger.error("Attempted to write data without initializing Excel file.");
-			throw new IllegalStateException("Excel file is not initialized. Call initializeExcel() first.");
-		}
+        } catch (IOException e) {
+            logger.error("Failed to initialize Excel file", e);
+            throw new RuntimeException("Excel initialization failed", e);
+        }
+    }
 
-		try {
-			logger.info("Writing test data: [{}] [{}] [{}] [{}]", testCaseName, expected, actual, status);
+    private void createHeaderRow() {
+        Row headerRow = sheet.createRow(0);
+        String[] headers = { "Test Case Name", "Expected Message", "Actual Message", "Status" };
 
-			int rowCount = sheet.getPhysicalNumberOfRows();
-			Row row = sheet.createRow(rowCount);
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(headers[i]);
+            cell.setCellStyle(headerStyle);
+        }
+    }
 
-			row.createCell(0).setCellValue(testCaseName);
-			row.createCell(1).setCellValue(expected);
-			row.createCell(2).setCellValue(actual);
+    private void createStyles() {
+        headerStyle = workbook.createCellStyle();
+        Font headerFont = workbook.createFont();
+        headerFont.setBold(true);
+        headerStyle.setFont(headerFont);
 
-			Cell statusCell = row.createCell(3);
-			statusCell.setCellValue(status);
+        passStyle = workbook.createCellStyle();
+        Font passFont = workbook.createFont();
+        passFont.setColor(IndexedColors.GREEN.getIndex());
+        passStyle.setFont(passFont);
 
-			CellStyle statusStyle = workbook.createCellStyle();
-			if ("Fail".equalsIgnoreCase(status)) {
-				Font failFont = workbook.createFont();
-				failFont.setColor(IndexedColors.RED.getIndex());
-				statusStyle.setFont(failFont);
-			}
-			statusCell.setCellStyle(statusStyle);
+        failStyle = workbook.createCellStyle();
+        Font failFont = workbook.createFont();
+        failFont.setColor(IndexedColors.RED.getIndex());
+        failStyle.setFont(failFont);
+    }
 
-			try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
-				workbook.write(fileOut);
-				logger.debug("Successfully wrote data to Excel file.");
-			}
+    public synchronized void writeTestDataToExcel(String testCaseName, String expected, String actual, String status) {
+        if (workbook == null || sheet == null) {
+            throw new IllegalStateException("Excel not initialized. Call initializeExcel() first.");
+        }
 
-		} catch (IOException e) {
-			logger.error("Failed to write data to Excel file at path: {}", filePath, e);
-			throw new RuntimeException("Failed to write data to Excel file.");
-		}
-	}
+        int rowNum = sheet.getLastRowNum() + 1;
+        Row row = sheet.createRow(rowNum);
+
+        row.createCell(0).setCellValue(testCaseName);
+        row.createCell(1).setCellValue(expected);
+        row.createCell(2).setCellValue(actual);
+
+        Cell statusCell = row.createCell(3);
+        statusCell.setCellValue(status);
+
+        if ("PASS".equalsIgnoreCase(status)) {
+            statusCell.setCellStyle(passStyle);
+        } else if ("FAIL".equalsIgnoreCase(status)) {
+            statusCell.setCellStyle(failStyle);
+        }
+
+        logger.debug("Added row {} for test case {}", rowNum, testCaseName);
+    }
+
+    public synchronized void saveAndClose() {
+        if (workbook == null) return;
+
+        try (FileOutputStream fos = new FileOutputStream(filePath)) {
+            workbook.write(fos);
+            workbook.close();
+            logger.debug("Excel file saved and closed: {}", filePath);
+        } catch (IOException e) {
+            logger.error("Failed to save Excel file", e);
+            throw new RuntimeException("Excel save failed", e);
+        }
+    }
 }

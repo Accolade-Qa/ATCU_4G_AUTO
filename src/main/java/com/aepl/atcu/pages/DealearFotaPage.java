@@ -79,40 +79,6 @@ public class DealearFotaPage {
 		}
 	}
 
-//	public void checkPagination() {
-//		try {
-//			logger.info("Starting pagination validation using CommonMethod.");
-//
-//			logger.info("Validating the presence of next, previous, and active buttons.");
-//			WebElement nextButton = wait.until(ExpectedConditions.visibilityOfElementLocated(nextBtn));
-//			WebElement prevButton = wait.until(ExpectedConditions.visibilityOfElementLocated(prevBtn));
-//			WebElement activeButton = wait.until(ExpectedConditions.visibilityOfElementLocated(activeBtn));
-//			
-//			JavascriptExecutor js = (JavascriptExecutor) driver;
-//			js.executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", nextButton);
-//			
-//			Thread.sleep(5000);
-//			
-//			System.out.println("Trying to click on next button");
-//			commMethod.checkPagination(nextButton, prevButton, activeButton);
-//			System.out.println("Button clicked...");
-//			
-//			Thread.sleep(2000);
-//			System.out.println("Trying to scroll......");
-//			JavascriptExecutor js1 = (JavascriptExecutor) driver;
-//			js1.executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", nextButton);
-//			System.out.println("Scrolled agian to active button...");
-//			
-//			System.out.println("Sleeping");
-//			Thread.sleep(6000);
-//			
-//			logger.info("Pagination validation completed successfully.");
-//		} catch (Exception e) {
-//			logger.error("Error occurred during pagination validation.", e);
-//			throw new RuntimeException("Pagination validation failed due to an exception.", e);
-//		}
-//	}
-
 	public void checkPagination() {
 		try {
 			logger.info("Starting pagination validation using CommonMethod.");
@@ -148,7 +114,7 @@ public class DealearFotaPage {
 			Thread.sleep(2000);
 
 			logger.info("Calling commMethod.checkPagination()...");
-			commonMethod.checkPagination(nextButton, prevButton, activeButton);
+			commonMethod.checkPagination();
 			logger.info("Pagination validation completed successfully.");
 
 		} catch (Exception e) {

@@ -279,6 +279,21 @@ public class LoginPage extends LoginPageLocators {
 		}
 	}
 
+	public String getEmailFieldErrorMessage() {
+		return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div/mat-error"))).getText()
+				.toString();
+	}
+
+	public String getPasswordFieldErrorMessage() {
+		return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div/mat-error"))).getText()
+				.toString();
+	}
+
+	public String getToastMessage() {
+		return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//simple-snack-bar/div[1]")))
+				.getText().toString();
+	}
+
 	// Helper method for waiting element visibility
 	public WebElement waitForVisibility(By locator) {
 		return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));

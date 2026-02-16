@@ -40,7 +40,6 @@ import org.testng.asserts.SoftAssert;
 
 import com.aepl.atcu.locators.CommonPageLocators;
 
-
 public class CommonMethods extends CommonPageLocators {
 	private WebDriver driver;
 	private WebDriverWait wait;
@@ -132,7 +131,7 @@ public class CommonMethods extends CommonPageLocators {
 	}
 
 	public String verifyPageTitle() {
-		String expectedTitle = "AEPL Sampark Diagnostic Cloud";
+		String expectedTitle = "AEPL TCU4G QA Diagnostic Cloud";
 		logger.info("Starting verification of the project title.");
 
 		try {
@@ -487,6 +486,73 @@ public class CommonMethods extends CommonPageLocators {
 		return component_title.getText();
 	}
 
+//	public String validateButtons() {
+//		try {
+//			JavascriptExecutor js = (JavascriptExecutor) driver;
+//			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+//
+//			logger.info("Starting validation of all buttons on the page.");
+//
+//			js.executeScript("window.scrollTo(0, 0)");
+//			Thread.sleep(200);
+//
+//			long lastHeight = (long) js.executeScript("return document.body.scrollHeight");
+//			while (true) {
+//				js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+//				long newHeight = (long) js.executeScript("return document.body.scrollHeight");
+//				if (newHeight == lastHeight) {
+//					break;
+//				}
+//				lastHeight = newHeight;
+//			}
+//
+//			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(ALL_BTN));
+//
+//			List<WebElement> buttons = new ArrayList<>(driver.findElements(ALL_BTN));
+//			int total = buttons.size();
+//			logger.debug("Found {} button elements after scrolling.", total);
+//
+//			softAssert.assertFalse(buttons.isEmpty(), "No buttons found on the page!");
+//
+//			for (int i = 0; i < total; i++) {
+//				boolean validated = false;
+//				int attempts = 0;
+//
+//				while (!validated && attempts < 3) {
+//					try {
+//						WebElement button = driver.findElements(ALL_BTN).get(i);
+//
+//						js.executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", button);
+//
+//						softAssert.assertTrue(button.isDisplayed(), "Button not displayed: " + button.getText());
+//						softAssert.assertTrue(button.isEnabled(), "Button not enabled: " + button.getText());
+//
+//						highlightElement(button, "solid purple");
+//						validated = true;
+//					} catch (StaleElementReferenceException | IndexOutOfBoundsException e) {
+//						logger.warn("Retrying validation for button index {} (attempt {}/3)", i + 1, attempts + 1);
+//						wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(ALL_BTN));
+//						attempts++;
+//					}
+//				}
+//
+//				if (!validated) {
+//					softAssert.fail("Button at index " + i + " could not be validated after retries.");
+//				}
+//			}
+//
+//			((JavascriptExecutor) driver).executeScript("window.scrollTo(0,0)");
+//			
+//			logger.info("All buttons validated and highlighted successfully.");
+//			return "All buttons are displayed and enabled successfully.";
+//
+//		} catch (Exception e) {
+//			logger.error("Unexpected exception while validating buttons: {}", e.getMessage(), e);
+//			softAssert.fail("Unexpected error while validating buttons: " + e.getMessage());
+//			return "Error validating buttons: " + e.getMessage();
+//		}
+//	}
+
 	public String validateButtons() {
 		try {
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -494,24 +560,11 @@ public class CommonMethods extends CommonPageLocators {
 
 			logger.info("Starting validation of all buttons on the page.");
 
-			js.executeScript("window.scrollTo(0, 0)");
-			Thread.sleep(200);
-
-			long lastHeight = (long) js.executeScript("return document.body.scrollHeight");
-			while (true) {
-				js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
-				long newHeight = (long) js.executeScript("return document.body.scrollHeight");
-				if (newHeight == lastHeight) {
-					break;
-				}
-				lastHeight = newHeight;
-			}
-
 			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(ALL_BTN));
+			List<WebElement> buttons = driver.findElements(ALL_BTN);
 
-			List<WebElement> buttons = new ArrayList<>(driver.findElements(ALL_BTN));
 			int total = buttons.size();
-			logger.debug("Found {} button elements after scrolling.", total);
+			logger.debug("Found {} button elements.", total);
 
 			softAssert.assertFalse(buttons.isEmpty(), "No buttons found on the page!");
 
@@ -523,15 +576,19 @@ public class CommonMethods extends CommonPageLocators {
 					try {
 						WebElement button = driver.findElements(ALL_BTN).get(i);
 
-						js.executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", button);
+						js.executeScript("arguments[0].scrollIntoView({block: 'center'});", button);
 
-						softAssert.assertTrue(button.isDisplayed(), "Button not displayed: " + button.getText());
-						softAssert.assertTrue(button.isEnabled(), "Button not enabled: " + button.getText());
+						String label = button.getText().isBlank() ? button.getAttribute("aria-label")
+								: button.getText();
+
+						softAssert.assertTrue(button.isDisplayed(), "Button not displayed: " + label);
+						softAssert.assertTrue(button.isEnabled(), "Button not enabled: " + label);
 
 						highlightElement(button, "solid purple");
 						validated = true;
+
 					} catch (StaleElementReferenceException | IndexOutOfBoundsException e) {
-						logger.warn("Retrying validation for button index {} (attempt {}/3)", i + 1, attempts + 1);
+						logger.warn("Retrying validation for button index {} (attempt {}/3)", i, attempts + 1);
 						wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(ALL_BTN));
 						attempts++;
 					}
@@ -542,11 +599,12 @@ public class CommonMethods extends CommonPageLocators {
 				}
 			}
 
+			js.executeScript("window.scrollTo(0,0)");
 			logger.info("All buttons validated and highlighted successfully.");
 			return "All buttons are displayed and enabled successfully.";
 
 		} catch (Exception e) {
-			logger.error("Unexpected exception while validating buttons: {}", e.getMessage(), e);
+			logger.error("Unexpected exception while validating buttons: " + e.getMessage(), e);
 			softAssert.fail("Unexpected error while validating buttons: " + e.getMessage());
 			return "Error validating buttons: " + e.getMessage();
 		}

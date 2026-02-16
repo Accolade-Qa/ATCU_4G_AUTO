@@ -18,12 +18,6 @@ import org.testng.Assert;
 public class FormUtils {
 	private static final Logger logger = LogManager.getLogger(FormUtils.class);
 
-	/**
-	 * Validates that all input boxes are displayed and enabled
-	 *
-	 * @param inputBoxes list of WebElements representing input boxes
-	 * @return true if all valid, false otherwise
-	 */
 	public static boolean validateInputBoxes(List<WebElement> inputBoxes) {
 		boolean allValid = true;
 
@@ -56,12 +50,6 @@ public class FormUtils {
 		return allValid;
 	}
 
-	/**
-	 * Validates that all mat-select dropdowns are displayed and enabled
-	 *
-	 * @param selects list of WebElements representing mat-select elements
-	 * @return true if all valid, false otherwise
-	 */
 	public static boolean validateSelects(List<WebElement> selects) {
 		boolean allValid = true;
 
@@ -111,17 +99,6 @@ public class FormUtils {
 		return inputsValid && selectsValid;
 	}
 
-	/**
-	 * Validate input fields dynamically against all expected error messages
-	 *
-	 * @param driver         WebDriver instance
-	 * @param container      Form container element
-	 * @param fieldValues    Map of field name -> list of invalid test values (one
-	 *                       per error scenario)
-	 * @param submitButton   Form submit button element
-	 * @param expectedErrors Map of field name -> list of expected error messages
-	 * @return Map of field name -> list of actual error messages captured
-	 */
 	public static Map<String, List<String>> validateFormFields(WebDriver driver, WebElement container,
 			Map<String, List<String>> fieldValues, // 🔹 Each field can have multiple test inputs
 			WebElement submitButton, Map<String, List<String>> expectedErrors) {

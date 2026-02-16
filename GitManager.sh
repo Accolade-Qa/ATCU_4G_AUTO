@@ -57,4 +57,4 @@ git commit -m "$USER_COMMIT_MESSAGE"
 # Push changes to the main branch
 echo " "
 echo "Pushing all changes to remote repository"
-git push main
+git push master

@@ -1,252 +1,201 @@
 package com.aepl.atcu.util;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.Duration;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class TableUtils {
-	private WebDriver driver;
-	private WebDriverWait wait;
-	private static final Logger logger = LogManager.getLogger(TableUtils.class);
 
-	public TableUtils(WebDriverWait wait) {
-		this.wait = wait;
-	}
+    private final WebDriver driver;
+    private final WebDriverWait wait;
+    private static final Logger logger = LogManager.getLogger(TableUtils.class);
 
-	public TableUtils(WebDriver driver, WebDriverWait wait) {
-		this.wait = wait;
-		this.driver = driver;
-	}
+    private static final By HEADER_LOCATOR = By.xpath(".//thead//th");
+    private static final By FALLBACK_HEADER_LOCATOR = By.xpath(".//tr[1]/*");
+    private static final By ROWS_LOCATOR = By.xpath(".//tbody/tr");
+    private static final By NO_DATA_IMG = By.xpath(".//img[contains(@class,'no-data-img')]");
 
-	public List<String> getTableHeaders(By tableLocator) {
-		List<String> headerTexts = new ArrayList<>();
-		try {
-			WebElement table = wait.until(ExpectedConditions.visibilityOfElementLocated(tableLocator));
+    public TableUtils(WebDriver driver, Duration timeout) {
+        this.driver = driver;
+        this.wait = new WebDriverWait(driver, timeout);
+    }
 
-			// MUST be relative to the table
-			List<WebElement> headers = table.findElements(By.xpath(".//thead//th"));
+    public TableUtils(WebDriver driver, WebDriverWait wait) {
+        this.driver = driver;
+        this.wait = wait;
+    }
 
-			// Fallback: first row as header
-			if (headers.isEmpty()) {
-				headers = table.findElements(By.xpath(".//tr[1]/*"));
-			}
+    // ================= HEADERS =================
 
-			headerTexts = headers.stream().map(WebElement::getText).filter(t -> !t.isEmpty())
-					.collect(Collectors.toList());
+    public List<String> getTableHeaders(By tableLocator) {
+        try {
+            WebElement table = wait.until(ExpectedConditions.visibilityOfElementLocated(tableLocator));
 
-			logger.info("Table Headers Found: {}", headerTexts);
+            List<WebElement> headers = table.findElements(HEADER_LOCATOR);
+            if (headers.isEmpty()) {
+                headers = table.findElements(FALLBACK_HEADER_LOCATOR);
+            }
 
-		} catch (TimeoutException e) {
-			logger.error("Table not found or not visible: {}", e.getMessage());
-		} catch (Exception e) {
-			logger.error("Unexpected error while extracting table headers: {}", e.getMessage(), e);
-		}
+            List<String> headerTexts = headers.stream()
+                    .map(e -> e.getText().trim())
+                    .filter(text -> !text.isEmpty())
+                    .collect(Collectors.toList());
 
-		return headerTexts;
-	}
+            logger.debug("Headers extracted: {}", headerTexts);
+            return headerTexts;
 
-	public List<Map<String, String>> getTableData(By tableLocator, List<String> headers) {
-		List<Map<String, String>> tableData = new ArrayList<>();
+        } catch (TimeoutException e) {
+            logger.error("Table not visible: {}", tableLocator, e);
+            return Collections.emptyList();
+        }
+    }
 
-		try {
-			WebElement table = wait.until(ExpectedConditions.visibilityOfElementLocated(tableLocator));
+    // ================= TABLE DATA =================
 
-			// Normalize header keys for consistency
-			List<String> normalizedHeaders = headers.stream().map(h -> h.trim().toUpperCase())
-					.collect(Collectors.toList());
+    public List<Map<String, String>> getTableData(By tableLocator, List<String> headers) {
+        List<Map<String, String>> tableData = new ArrayList<>();
 
-			// 1️⃣ Skip table if "No Data Found" row is present
-			if (!table.findElements(By.xpath(".//img[contains(@class,'no-data-img')]")).isEmpty()) {
-				logger.info("No data available in table (found no-data-img).");
-				return tableData;
-			}
+        try {
+            WebElement table = wait.until(ExpectedConditions.visibilityOfElementLocated(tableLocator));
 
-			// 2️⃣ Extract rows
-			List<WebElement> rows = table.findElements(By.xpath(".//tbody/tr"));
-			if (rows.isEmpty()) {
-				logger.warn("No rows found in the table, and 'no-data-img' not detected.");
-				return tableData;
-			}
+            if (!table.findElements(NO_DATA_IMG).isEmpty()) {
+                logger.debug("No data image present. Returning empty table data.");
+                return tableData;
+            }
 
-			// 3️⃣ Process each row
-			for (WebElement row : rows) {
+            List<WebElement> rows = table.findElements(ROWS_LOCATOR);
+            logger.debug("Row count found: {}", rows.size());
 
-				// Skip the no-data row explicitly
-				if (!row.findElements(By.xpath(".//img[contains(@class,'no-data-img')]")).isEmpty()) {
-					logger.info("Skipping row containing no-data image.");
-					continue;
-				}
+            for (WebElement row : rows) {
 
-				List<WebElement> cells = row.findElements(By.tagName("td"));
-				if (cells.isEmpty()) {
-					logger.debug("Skipping empty row.");
-					continue; // skip placeholder rows
-				}
+                if (!row.findElements(NO_DATA_IMG).isEmpty()) {
+                    continue;
+                }
 
-				Map<String, String> rowData = new LinkedHashMap<>();
+                List<WebElement> cells = row.findElements(By.tagName("td"));
+                if (cells.isEmpty()) continue;
 
-				for (int i = 0; i < cells.size(); i++) {
-					String header = i < normalizedHeaders.size() ? normalizedHeaders.get(i) : "COLUMN" + (i + 1);
+                Map<String, String> rowData = new LinkedHashMap<>();
 
-					WebElement cell = cells.get(i);
-					String cellText = cell.getText().trim();
+                for (int i = 0; i < cells.size(); i++) {
+                    String header = (i < headers.size()) ? headers.get(i).trim() : "EXTRA_COLUMN_" + (i + 1);
+                    String value = extractCellValue(cells.get(i));
+                    rowData.put(header, value);
+                }
 
-					// 4️⃣ Handle checkboxes
-					List<WebElement> checkboxes = cell.findElements(By.xpath(".//input[@type='checkbox']"));
-					if (!checkboxes.isEmpty()) {
-						boolean isChecked = checkboxes.get(0).isSelected();
-						rowData.put(header, isChecked ? "CHECKED" : "UNCHECKED");
-						continue;
-					}
+                tableData.add(rowData);
+            }
 
-					// 5️⃣ Extract fallback text (inside spans, divs, strong, etc.)
-					if (cellText.isEmpty()) {
-						List<WebElement> innerTexts = cell.findElements(By.xpath(".//*"));
-						for (WebElement inner : innerTexts) {
-							if (!inner.getText().trim().isEmpty()) {
-								cellText = inner.getText().trim();
-								break;
-							}
-						}
-					}
+            logger.debug("Total rows extracted: {}", tableData.size());
 
-					rowData.put(header, cellText);
-				}
+        } catch (Exception e) {
+            logger.error("Error extracting table data", e);
+        }
 
-				tableData.add(rowData);
-			}
+        return tableData;
+    }
 
-			logger.info("Total valid rows extracted: {}", tableData.size());
+    private String extractCellValue(WebElement cell) {
 
-		} catch (Exception e) {
-			logger.error("Unexpected error while extracting table data: {}", e.getMessage(), e);
-		}
+        // Checkbox handling
+        List<WebElement> checkboxes = cell.findElements(By.cssSelector("input[type='checkbox']"));
+        if (!checkboxes.isEmpty()) {
+            return checkboxes.get(0).isSelected() ? "CHECKED" : "UNCHECKED";
+        }
 
-		return tableData;
-	}
+        String text = cell.getText().trim();
+        if (!text.isEmpty()) return text;
 
-	public boolean areViewButtonsEnabled(By tableLocator) {
-		boolean allEnabled = true;
-		try {
-			WebElement table = wait.until(ExpectedConditions.visibilityOfElementLocated(tableLocator));
+        // Fallback to inner elements
+        for (WebElement inner : cell.findElements(By.xpath(".//*"))) {
+            String innerText = inner.getText().trim();
+            if (!innerText.isEmpty()) return innerText;
+        }
 
-			// Find all "view" buttons inside the Action column
-			List<WebElement> viewButtons = table
-					.findElements(By.xpath(".//tbody//tr//td[last()]//button[contains(., 'visibility')]"));
+        return "";
+    }
 
-			logger.info("Found {} view buttons", viewButtons.size());
+    // ================= BUTTON STATE =================
 
-			for (WebElement btn : viewButtons) {
-				if (!btn.isDisplayed() || !btn.isEnabled()) {
-					allEnabled = false;
-					logger.warn("A view button is not enabled or visible!");
-					break;
-				}
-			}
-		} catch (Exception e) {
-			logger.error("Error checking view button states: {}", e.getMessage(), e);
-			allEnabled = false;
-		}
-		return allEnabled;
-	}
+    public boolean areViewButtonsEnabled(By tableLocator) {
+        return areActionButtonsEnabled(tableLocator, "visibility");
+    }
 
-	public boolean areDeleteButtonsEnabled(By tableLocator) {
-		boolean allEnabled = true;
-		try {
-			WebElement table = wait.until(ExpectedConditions.visibilityOfElementLocated(tableLocator));
+    public boolean areDeleteButtonsEnabled(By tableLocator) {
+        return areActionButtonsEnabled(tableLocator, "delete");
+    }
 
-			// Find all "delete" buttons inside the Action column
-			List<WebElement> deleteButtons = table
-					.findElements(By.xpath(".//tbody//tr//td[last()]//button[contains(., 'delete')]"));
+    private boolean areActionButtonsEnabled(By tableLocator, String keyword) {
+        try {
+            WebElement table = wait.until(ExpectedConditions.visibilityOfElementLocated(tableLocator));
 
-			logger.info("Found {} delete buttons", deleteButtons.size());
+            List<WebElement> buttons = table.findElements(
+                    By.xpath(".//tbody//tr//td[last()]//button[contains(., '" + keyword + "')]"));
 
-			for (WebElement btn : deleteButtons) {
-				if (!btn.isDisplayed() || !btn.isEnabled()) {
-					allEnabled = false;
-					logger.warn("A delete button is not enabled or visible!");
-					break;
-				}
-			}
-		} catch (Exception e) {
-			logger.error("Error checking delete button states: {}", e.getMessage(), e);
-			allEnabled = false;
-		}
-		return allEnabled;
-	}
+            logger.debug("Found {} '{}' buttons", buttons.size(), keyword);
 
-	public boolean clickFirstViewButton(By tableLocator) {
-		try {
-			By viewButtonLocator = By.xpath(".//td[last()]//button[contains(., 'visibility')]");
-			WebElement firstViewButton = wait.until(ExpectedConditions.elementToBeClickable(viewButtonLocator));
-			firstViewButton.click();
-			logger.info("Clicked the first view button successfully.");
-			return true;
-		} catch (Exception e) {
-			logger.error("Error clicking the first view button: {}", e.getMessage(), e);
-			return false;
-		}
-	}
+            for (WebElement btn : buttons) {
+                if (!btn.isDisplayed() || !btn.isEnabled()) {
+                    logger.warn("{} button disabled or hidden", keyword);
+                    return false;
+                }
+            }
+            return true;
 
-	public boolean clickFirstDeleteButton(By tableLocator) {
-		try {
-			By deleteButtonLocator = By.xpath(".//td[last()]//button[contains(., 'delete')]");
-			WebElement firstDeleteButton = wait.until(ExpectedConditions.elementToBeClickable(deleteButtonLocator));
-			firstDeleteButton.click();
-			logger.info("Clicked the first delete button successfully.");
-			return true;
-		} catch (Exception e) {
-			logger.error("Error clicking the first delete button: {}", e.getMessage(), e);
-			return false;
-		}
-	}
+        } catch (Exception e) {
+            logger.error("Error checking {} button state", keyword, e);
+            return false;
+        }
+    }
 
-	/**
-	 * Checks if the "No Data Found" image or message is present inside the table.
-	 *
-	 * @param tableLocator Locator for the table element.
-	 * @return true if a 'no data' indicator (like class 'no-data-img') is found,
-	 *         false otherwise.
-	 */
-	public boolean isNoDataImagePresent(By tableLocator) {
-		try {
-			WebElement table = wait.until(ExpectedConditions.visibilityOfElementLocated(tableLocator));
+    // ================= BUTTON ACTIONS =================
 
-			// Look for no-data image inside this table only
-			List<WebElement> noDataElements = table.findElements(By.xpath(".//img[contains(@class,'no-data-img')]"));
+    public boolean clickFirstViewButton(By tableLocator) {
+        return clickFirstActionButton(tableLocator, "visibility");
+    }
 
-			if (!noDataElements.isEmpty()) {
-				logger.info("No data available in the table (found no-data-img).");
-				return true;
-			}
+    public boolean clickFirstDeleteButton(By tableLocator) {
+        return clickFirstActionButton(tableLocator, "delete");
+    }
 
-			// Optional fallback for text
-			List<WebElement> noDataText = table
-					.findElements(By.xpath(".//*[contains(translate(text(), 'NO DATA', 'no data'), 'no data')]"));
+    private boolean clickFirstActionButton(By tableLocator, String keyword) {
+        try {
+            WebElement table = wait.until(ExpectedConditions.visibilityOfElementLocated(tableLocator));
 
-			if (!noDataText.isEmpty()) {
-				logger.info("No data available (found text 'no data').");
-				return true;
-			}
+            WebElement button = table.findElement(
+                    By.xpath(".//tbody//tr[1]//td[last()]//button[contains(., '" + keyword + "')]"));
 
-		} catch (TimeoutException e) {
-			logger.error("Table not found: {}", e.getMessage());
-		} catch (Exception e) {
-			logger.error("Unexpected error: {}", e.getMessage(), e);
-		}
+            wait.until(ExpectedConditions.elementToBeClickable(button)).click();
 
-		return false;
-	}
+            logger.debug("Clicked first '{}' button", keyword);
+            return true;
 
+        } catch (Exception e) {
+            logger.error("Error clicking first {} button", keyword, e);
+            return false;
+        }
+    }
+
+    // ================= NO DATA CHECK =================
+
+    public boolean isNoDataImagePresent(By tableLocator) {
+        try {
+            WebElement table = wait.until(ExpectedConditions.visibilityOfElementLocated(tableLocator));
+
+            if (!table.findElements(NO_DATA_IMG).isEmpty()) return true;
+
+            return !table.findElements(
+                    By.xpath(".//*[contains(translate(text(),'NO DATA','no data'),'no data')]")).isEmpty();
+
+        } catch (Exception e) {
+            logger.error("Error checking no-data state", e);
+            return false;
+        }
+    }
 }

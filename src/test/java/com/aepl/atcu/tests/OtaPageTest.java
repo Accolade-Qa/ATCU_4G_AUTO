@@ -20,7 +20,7 @@ public class OtaPageTest extends TestBase {
 	@BeforeClass
 	public void setUp() {
 		super.setUp();
-		this.loginPage = new LoginPage(driver);
+		this.loginPage = new LoginPage(driver, wait);
 		this.otaPage = new OtaPage(driver);
 		this.excelUtility = new ExcelUtility();	
 		excelUtility.initializeExcel("Ota_Page_Test");

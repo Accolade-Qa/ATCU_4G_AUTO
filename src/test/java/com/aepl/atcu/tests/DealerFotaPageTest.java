@@ -16,7 +16,6 @@ public class DealerFotaPageTest extends TestBase {
 	private DealearFotaPage dealerFota;
 	private CommonMethods commonMethod;
 
-	@Override
 	@BeforeClass
 	public void setUp() {
 		super.setUp();
@@ -58,26 +57,25 @@ public class DealerFotaPageTest extends TestBase {
 
 	@Test(priority = 3)
 	public void testCheckPagination() {
-	    logger.info("Testing pagination functionality.");
-	    String testCaseName = "Pagination Test";
-	    String expectedMessage = "Pagination validated successfully.";
-	    String actualMessage = "";
-	    String result = "";
+		logger.info("Testing pagination functionality.");
+		String testCaseName = "Pagination Test";
+		String expectedMessage = "Pagination validated successfully.";
+		String actualMessage = "";
+		String result = "";
 
-	    try {
-	        dealerFota.checkPagination();
-	        actualMessage = expectedMessage;
-	        result = "Pass";
-	        logger.info("Test case passed: " + testCaseName);
-	    } catch (Exception e) {
-	        actualMessage = e.getMessage();
-	        result = "Fail";
-	        logger.error("Test case failed: " + testCaseName, e);
-	    } finally {
-	        excelUtility.writeTestDataToExcel(testCaseName, expectedMessage, actualMessage, result);
-	    }
+		try {
+			dealerFota.checkPagination();
+			actualMessage = expectedMessage;
+			result = "Pass";
+			logger.info("Test case passed: " + testCaseName);
+		} catch (Exception e) {
+			actualMessage = e.getMessage();
+			result = "Fail";
+			logger.error("Test case failed: " + testCaseName, e);
+		} finally {
+			excelUtility.writeTestDataToExcel(testCaseName, expectedMessage, actualMessage, result);
+		}
 	}
-
 
 	@Test(priority = 4)
 	public void testClickSearchAndTable() {

@@ -64,7 +64,7 @@ public class MyAis140TicketsPageTest extends TestBase {
 	@BeforeClass
 	public void setUp() {
 		super.setUp();
-		loginPage = new LoginPage(driver);
+		loginPage = new LoginPage(driver, wait);
 		myais140tickets = new MyAis140TicketsPage(driver);
 		excelUtility = new ExcelUtility();
 		excelUtility.initializeExcel("MyAis140TicketsPage_Test");

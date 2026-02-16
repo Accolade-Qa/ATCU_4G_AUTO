@@ -9,8 +9,8 @@ public class LoginPageLocators {
 	public static final By SIGN_IN_BTN = By.xpath("//button[@class='submit-button']");
 
 	//LogOut
-	public static final By PROFILE_ICON = By.xpath("//a[starts-with(normalize-space(text()), 'Hi,')]");
-	public static final By LOGOUT_BTN = By.xpath("//a[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'log')]");
+	public static final By PROFILE_ICON = By.xpath("//a/span[starts-with(normalize-space(text()), 'Hi,')]");
+	public static final By LOGOUT_BTN = By.className("dropdown-item");
 
 	// Forgot Password
 	public static final By FORGOT_PASSWORD_LNK = By.xpath("//a[contains(text(), 'Forgot')]");
