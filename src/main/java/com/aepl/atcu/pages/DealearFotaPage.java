@@ -18,9 +18,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.aepl.atcu.locators.DealerFotaPageLocators;
 import com.aepl.atcu.util.PageActionsUtil;
 
-public class DealearFotaPage {
+public class DealearFotaPage extends DealerFotaPageLocators {
 	private final WebDriver driver;
 	private final WebDriverWait wait;
 	private final PageActionsUtil commonMethod;
@@ -32,22 +33,6 @@ public class DealearFotaPage {
 		this.commonMethod = new PageActionsUtil(driver, wait);
 		logger.info("Initialized the driver and wait ");
 	}
-
-	// Locators goes here
-	private final By navBarLink = By.xpath("//*[@id=\"navbarDropdownProfile\"]/span");
-	private final By dealerFota = By.xpath("//a[@class=\"dropdown-item ng-star-inserted\"][6]");
-	private final By addApprovedFileBtn = By.xpath("/html/body/app-root/app-dealer-fota/div/div/div[2]/button");
-	private final By fileNameInput = By.tagName("input");
-	private final By saveFileButton = By.xpath("//button[@class='btn btn-primary w-100']");
-	private final By tableRowsLocator = By.xpath("//tr[@class=\"odd text-center ng-star-inserted\"]");
-	// private By toastLocator = By.id("cdk-overlay-1");
-	private final By searchBox = By.name("searchInput");
-	private final By tableHeadings = By.xpath("//tr[@class=\"text-center\"]");
-	private final By deleteBtn = By.xpath("//i[@class=\"mat-tooltip-trigger fas fa-trash pl-3 ng-star-inserted\"]");
-
-	private By nextBtn = By.xpath("//a[@class=\"ng-star-inserted\"]");
-	private By prevBtn = By.xpath("//a[@class=\"ng-star-inserted\"]");
-	private By activeBtn = By.xpath("//a[@class=\"ng-star-inserted\"]");
 
 	// Global variables goes here
 	String fileNameToSearch;

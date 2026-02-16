@@ -8,7 +8,6 @@ import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -16,11 +15,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.aepl.atcu.util.PageActionsUtil;
+import com.aepl.atcu.locators.OtaPageLocators;
 import com.aepl.atcu.util.CalendarActions;
 import com.aepl.atcu.util.MouseActions;
+import com.aepl.atcu.util.PageActionsUtil;
 
-public class OtaPage extends MouseActions{
+public class OtaPage extends OtaPageLocators {
 
 	// Global variables
 	private WebDriver driver;
@@ -33,7 +33,6 @@ public class OtaPage extends MouseActions{
 
 	// Constructor
 	public OtaPage(WebDriver driver) {
-		super(driver);
 		this.driver = driver;
 		this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		this.commonMethod = new PageActionsUtil(driver, this.wait);
@@ -43,27 +42,6 @@ public class OtaPage extends MouseActions{
 
 	// Variables
 	public String batchCount = "";
-
-	// Locators
-	private By navBarLink = By.xpath("//span[@class='headers_custom color_3D5772']");
-	private By otaLink = By.xpath("//a[@class='dropdown-item ng-star-inserted'][4]");
-	private By buttonsList = By.xpath("//button[@class='btn btn-outline-primary ng-star-inserted']");
-	private By nextBtn = By.xpath("//a[@class=\"ng-star-inserted\"]");
-	private By prevBtn = By.xpath("//a[@class=\"ng-star-inserted\"]");
-	private By activeBtn = By.xpath("//a[@class=\"ng-star-inserted\"]");
-	private By eyeActionButton = By.xpath("//mat-icon[@mattooltip='View']");
-	private By calendar = By.xpath("//button[@class=\"mat-focus-indicator mat-icon-button mat-button-base\"]");
-	private By batchIdFrom = By.id("fromBatchId");
-	private By batchIdTo = By.id("toBatchId");
-	private By batchSubmitBtn = By.xpath("//button[@class=\"btn-sm btn btn-outline-primary example-full-width\"]");
-	private By clearButton = By.xpath("//button[@class=\"btn-sm btn btn-outline-secondary example-full-width\"]");
-	public By reportButton = By.xpath("//button[@class=\"btn-sm btn example-full-width float-right\"]");
-	private By allInputFields = By.tagName("input");
-	private By toastMessageOfOtaAdd = By.xpath("//simple-snack-bar//span[text()='Success']");
-	private By editButtonOfOta = By.xpath("//mat-icon[@class=\"mat-icon notranslate mx-2 material-icons mat-icon-no-color\"]");
-	private By deleteButtonOfOta = By.xpath(
-			"//mat-icon[class=\"mat-icon notranslate mat-tooltip-trigger delete-icon material-icons mat-icon-no-color\"]");
-	private By dropdownOtaType = By.id("id=\"mat-select-6\"");
 
 	// Methods
 	public void clickNavBar() {
@@ -119,7 +97,7 @@ public class OtaPage extends MouseActions{
 	//
 	public boolean checkSearchBoxAndTable(String input, List<String> expectedHeaders) {
 		// this is to get the latest batch number of the ota table.
-		batchCount = driver.findElement(By.xpath("//table/tbody/tr[1]/td[1]")).getText();
+		batchCount = driver.findElement(otaBatchFirstRowId).getText();
 
 		return commonMethod.checkSearchBoxWithTableHeadings(input, expectedHeaders);
 	}
@@ -127,7 +105,7 @@ public class OtaPage extends MouseActions{
 	public void checkActionButtons() {
 		logger.log(Level.INFO, "Checking the eye action button");
 		try {
-			driver.switchTo().activeElement().findElement(By.xpath("//table/tbody/tr/td[9]"));
+			driver.switchTo().activeElement().findElement(otaActionColumnCell);
 			commonMethod.clickEyeActionButton(eyeActionButton);
 		} catch (Exception e) {
 			logger.error("Error while clicking on the eye action button", e);
@@ -356,20 +334,17 @@ public class OtaPage extends MouseActions{
 			}
 
 			// Locate buttons dynamically
-			By addButtonLocator = By.xpath("//button[@class='btn btn-outline-primary ng-star-inserted']");
-			By updateButtonLocator = By.xpath("//button[@class=\"btn btn-outline-primary ml-1 ng-star-inserted\"]");
-
-			boolean isAddButtonPresent = driver.findElements(addButtonLocator).size() > 0;
-			boolean isUpdateButtonPresent = driver.findElements(updateButtonLocator).size() > 0;
+			boolean isAddButtonPresent = driver.findElements(otaAddButton).size() > 0;
+			boolean isUpdateButtonPresent = driver.findElements(otaUpdateButton).size() > 0;
 
 			if ("add".equalsIgnoreCase(action) && isAddButtonPresent) {
-				WebElement addButton = wait.until(ExpectedConditions.elementToBeClickable(addButtonLocator));
+				WebElement addButton = wait.until(ExpectedConditions.elementToBeClickable(otaAddButton));
 				addButton.click();
 				toastConfirmation = wait.until(ExpectedConditions.visibilityOfElementLocated(toastMessageOfOtaAdd));
 				return toastConfirmation.getText();
 
 			} else if ("update".equalsIgnoreCase(action) && isUpdateButtonPresent) {
-				WebElement updateButton = wait.until(ExpectedConditions.elementToBeClickable(updateButtonLocator));
+				WebElement updateButton = wait.until(ExpectedConditions.elementToBeClickable(otaUpdateButton));
 				updateButton.click();
 				toastConfirmation = wait.until(ExpectedConditions.visibilityOfElementLocated(toastMessageOfOtaAdd));
 				return toastConfirmation.getText();

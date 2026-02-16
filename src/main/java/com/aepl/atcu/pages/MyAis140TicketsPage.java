@@ -26,6 +26,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.aepl.atcu.locators.MyAis140TicketsPageLocators;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -33,7 +34,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
-public class MyAis140TicketsPage {
+public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 	private final WebDriver driver;
 	private final WebDriverWait wait;
 	private static final Logger logger = LogManager.getLogger(MyAis140TicketsPage.class);
@@ -64,97 +65,6 @@ public class MyAis140TicketsPage {
 	}
 
 // Locators Goes here
-
-//	private By navBarLink = By.xpath("//span[@class=\"headers_custom color_3D5772\"]");
-//	private By MyAis140 = By.xpath("//*[@id=\"navbarSupportedContent\"]/div/ul/li[2]/div/a[1]");
-//	private By SearchBox = By.xpath("/html/body/app-root/app-my-ais140-ticket-page/div/div[1]/div[4]/div/div[1]/i/div/input");
-//	private By tableHeadings = By.xpath("//tr[@class=\\\"text-center\\\"]");
-
-	private final By navBarLink = By.xpath("//span[@class=\"headers_custom color_3D5772\"]");
-	private final By MyAis140 = By.xpath("//*[@id=\"navbarSupportedContent\"]/div/ul/li[2]/div/a[1]");
-	private final By SearchBox = By
-			.xpath("/html/body/app-root/app-my-ais140-ticket-page/div/div[1]/div[4]/div/div[1]/i/div/input");
-	private final By tableHeadings = By.xpath("//tr[@class=\\\"text-center\\\"]");
-	private By overlay = By.cssSelector(".overlay");
-//	private By viewButton = By.xpath("//[@id='DataTables_Table_0']/tbody/tr/td[12]/mat-icon");
-	
-//	xpath=//table[@id='DataTables_Table_0']/tbody/tr/td[12]/mat-icon
-	private By viewButton = By.xpath("//*[@id=\"DataTables_Table_0\"]/tbody/tr/td[12]/mat-icon");
-//	private By viewButton = By.xpath("//*[@id=\"DataTables_Table_0\"]/tbody/tr/td[12]/i");
-	private By Arrow = By.xpath("//div[@class=\"thumb ng-star-inserted\"]"); 
-	private By TicketNumber = By.id("mat-input-22");
-	private By TicketCreate = By.id("mat-input-23");
-	private By TicketAssigned = By.id("mat-input-24");
-	private By TicketCompleted = By.id("mat-input-25");
-	private By TicketCertificate = By.id("mat-input-26");
-	private By TicketStatus = By.id("mat-input-27");
-	private By TicketRemark = By.id("mat-input-28");
-	private By TicketGenrate = By.id("mat-input-29");
-	private By TicketDesc = By.id("mat-input-30");
-	private By DeviceInfo = By.className("crm_head_b");
-	private By UINNumber = By.id("mat-input-31");
-	private By IMEINumber = By.id("mat-input-32");
-
-	private By ICCIDNumber = By.id("mat-input-33");
-	private By DeviceModel = By.id("mat-input-34");
-	private By DeviceMake = By.id("mat-input-35");
-	private By primaryOperatorName = By.id("mat-input-36");
-	private By primaryOperatorNumber = By.id("mat-input-37");
-	private By secondaryOperatorName = By.id("mat-input-38");
-	private By secondaryOperatorNumber = By.id("mat-input-39");
-	private By vehicleOwnerName = By.id("mat-input-40");
-	private By vehicleOwnerMobileNumber = By.id("mat-input-41");
-	private By vehicleOwnerPOAdocname = By.id("mat-input-42");
-	private By vehicleOwnerPOAdocnumber = By.id("mat-input-43");
-	private By vehicleOwnerPOIdocname = By.id("mat-input-44");
-	private By vehicleOwnerPOIdocnumber = By.id("mat-input-45");
-	private By vehicleOwnerAddress = By.id("mat-input-46");
-	private By vehiclemodel = By.id("mat-input-47");
-	private By vehiclemake = By.id("mat-input-48");
-	private By manufacturingyear = By.id("mat-input-49");
-	private By chassisnumber = By.id("mat-input-50");
-	private By enginenumber = By.id("mat-input-51");
-	private By registrationnumber = By.id("mat-input-52");
-	private By invoicedate = By.id("mat-input-53");
-	private By invoicenumber = By.id("mat-input-54");
-	private By rtostate = By.id("mat-input-55");
-	private By rtocode = By.id("mat-input-56");
-	private By ignstatus = By.id("mat-input-57");
-	private By ignButton = By.xpath("/html/body/app-root/app-my-activations-details-page/div/form/div/div[5]/div/div[2]/div[23]/button");
-	private By dealercode = By.id("mat-input-58");
-	private By dealeremail = By.id("mat-input-59");
-	private By dealercity = By.id("mat-input-60");
-	private By dealerphoneno = By.id("mat-input-61");
-	private By posname = By.id("mat-input-62");
-	private By poscode = By.id("mat-input-63");
-	private By fotabatchid = By.id("mat-input-64");
-	private By currentfw = By.id("mat-input-65");
-	private By assinedfw = By.id("mat-input-66");
-	private By fotastatus = By.id("mat-input-67");
-	private By fotaprogress = By.id("mat-input-68");
-	private By fotapriip = By.id("mat-input-69");
-	private By fotapriipstatus = By.id("mat-input-70");
-	private By fotasecip = By.id("mat-input-71");
-	private By fotasecipstatus = By.id("mat-input-72");
-	private By stateenableota = By.id("mat-input-73");
-	private By Reason2skipstage= By.id("mat-select-value-23");
-	private By Remark2skipstage= By.id("mat-input-75");
-	private By skippedby= By.id("mat-input-74");
-	private By selectskipstage2= By.id("mat-option-190");
-	private By removestage2restriction= By.xpath("/html/body/app-root/app-my-activations-details-page/div/form/div/div[7]/div/div[2]/div[25]/div[4]/button");
-	private By VehicleIgnitionOn = By.xpath("//*[@id=\"mat-select-value-1\"]");
-	private By VehicleIgnitionOnOption = By.xpath("//*[@id=\"mat-option-15\"]/span");
-	private By Remarkforsubstage1 = By.id("mat-input-2");
-	private By overallticketstatus = By.xpath("//*[@id=\"mat-select-18\"]/div/div[2]/div");
-	private By inprogressstatus = By.xpath("//*[@id=\"mat-option-146\"]/span");
-	private By updatebutton = By.xpath("/html/body/app-root/app-my-activations-details-page/div/form/div/div[8]/div/div[2]/div[61]/button");
-	private By gsmnw = By.id("mat-select-value-3");
-	private By gsmnwoption = By.xpath("//*[@id=\"mat-option-33\"]/span");
-	private By Remarkforsubstage2 = By.id("mat-input-4");
-	private By gpsfix = By.xpath("//*[@id=\"mat-select-4\"]/div/div[2]/div");
-	private By gpsfixoption = By.xpath("//*[@id=\"mat-option-51\"]/span");
-	private By Remarkforsubstage3 = By.id("mat-input-6");
-
 
 	public String generateRandomString(int length) {
 		String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

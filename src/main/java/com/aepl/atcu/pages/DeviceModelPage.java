@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -16,30 +15,15 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.aepl.atcu.locators.DeviceModelPageLocators;
 import com.aepl.atcu.util.PageActionsUtil;
 
-public class DeviceModelPage {
+public class DeviceModelPage extends DeviceModelPageLocators {
 	// Global variables
 	private final WebDriver driver;
 	private final WebDriverWait wait;
 	private PageActionsUtil commonMethod;
 	private final Logger logger = LogManager.getLogger(DeviceModelPage.class);
-
-	// Locators
-	private final By ModelNameInput = By.xpath("//input[@formcontrolname='modelName']");
-	private final By ModelCodeInput = By.xpath("//input[@formcontrolname='modelCode']");
-	private final By HWVersionInput = By.xpath("//input[@formcontrolname='hwVersion']");
-	private final By SubmitButton = By.xpath("//button[contains(.,'Submit')]");
-	private final By UpdateButton = By.xpath("//button[contains(.,'Update')]");
-	private final By dropDown = By.xpath("//span[@class='headers_custom color_3D5772']");
-	private final By DeviceModel = By.xpath("//a[@routerlink='model']");
-	private final By AddDeviceModel = By.xpath("//button[contains(.,'Add Device Model')]");
-	private final By pageHeader = By.xpath("//h4[@class='h4ssssss text-cente mt-1']");
-	private final By EyeActionBtn = By.xpath("//mat-icon[@mattooltip='View']");
-	private final By DltActionBtn = By.xpath("//mat-icon[@mattooltip='Delete']");
-	private final By nextBtn = By.xpath("//a[@class=\"ng-star-inserted\"]");
-	private final By prevBtn = By.xpath("//a[@class=\"ng-star-inserted\"]");
-	private final By activeBtn = By.xpath("//a[@class=\"ng-star-inserted\"]");
 
 	// Constructor
 	public DeviceModelPage(WebDriver driver) {

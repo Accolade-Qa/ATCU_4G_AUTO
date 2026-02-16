@@ -11,16 +11,16 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.aepl.atcu.locators.DispatchedDevicePageLocators;
 import com.aepl.atcu.util.PageActionsUtil;
 import com.aepl.atcu.util.MouseActions;
 
-public class DispachedDevicePage {
+public class DispachedDevicePage extends DispatchedDevicePageLocators {
 
 	// Global variables
 	private final WebDriver driver;
@@ -28,11 +28,6 @@ public class DispachedDevicePage {
 	private PageActionsUtil commonMethod;
 	private MouseActions mouse;
 	private final Logger logger = LogManager.getLogger(DispachedDevicePage.class);
-
-	private final By dropDown = By.xpath("//span[@class='headers_custom color_3D5772']");
-	private final By DispatchedDevice = By.xpath("//a[@routerlink='dispatch-device-page']");
-	private final By AddDispatchedDevice = By.xpath("//button[contains(.,'Add Dispatched Device')]");
-	private final By downloadSampleButton = By.xpath("//button[contains(.,'Download Sample')]");
 
 	public DispachedDevicePage(WebDriver driver) {
 		this.driver = driver;
@@ -99,7 +94,7 @@ public class DispachedDevicePage {
 
 	public void uploadFile(String dir, String filePrefix) throws AWTException {
 		try {
-			WebElement chooseFile = driver.findElement(By.id("txtFileUpload"));
+			WebElement chooseFile = driver.findElement(fileUploadInput);
 			mouse.moveToElement(chooseFile);
 
 			mouse.clickElement(chooseFile);

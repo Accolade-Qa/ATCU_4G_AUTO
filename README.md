@@ -1,171 +1,162 @@
 # ATCU 4G Automation
 
-Java + TestNG automation framework for validating the AEPL TCU4G QA Diagnostic Cloud UI and selected backend flows.
+Java + TestNG automation framework for validating AEPL TCU4G QA Diagnostic Cloud (UI + selected API-assisted flows).
 
-## Overview
+## Current Implementation Snapshot
 
-This project automates major ATCU 4G workflows using Selenium WebDriver (UI) and RestAssured (API helpers), with:
-
-- Page Object Model style structure (`pages`, `locators`, `tests`)
-- TestNG-based test orchestration and listeners
-- Excel-based per-test logging (`test-results/*.xlsx`)
-- Extent HTML reporting (`test-results/ExtentReport.html`)
-- Log4j2 logging (`logs/test-automation.log`)
+- Framework pattern: Page Object Model + utility-driven actions/assertions
+- Test orchestration: TestNG (`testNG.xml`) + Maven Surefire
+- Browser setup: `WebDriverFactory` with WebDriverManager
+- Shared lifecycle: `TestBase` (`@BeforeClass`, `@BeforeMethod`, `@AfterSuite`)
+- Reporting:
+  - Extent report via `TestListener`
+  - Excel result logging via `ExcelUtility`
+  - Screenshots on failures
+- Refactored test execution style:
+  - `Executor` + `SoftAssert`
+  - centralized pass/fail comparison and Excel write
 
 ## Tech Stack
 
 - Java 17
 - Maven
-- Selenium 4
-- TestNG 7
-- WebDriverManager
-- Apache POI
-- RestAssured
-- ExtentReports
-- Log4j2
-
-Primary dependency definitions: `pom.xml`
+- Selenium 4.27.0
+- TestNG 7.10.2
+- RestAssured 5.4.0
+- Apache POI 5.2.5
+- ExtentReports 5.0.9
+- Log4j2 2.20.0
 
 ## Project Structure
 
 ```text
-ATCU_4G_AUTO/
-  src/
-    main/java/com/aepl/atcu/
-      actions/
-      base/
-      listeners/
-      locators/
-      pages/
-      util/
-    main/resources/
-      log4j2.xml
-    test/java/com/aepl/atcu/tests/
-      LoginPageTest.java
-      DeviceDashboardPageTest.java
-      DeviceModelPageTest.java
-      DealerFotaPageTest.java
-      DispatchedDevicePageTest.java
-      OtaPageTest.java
-      MyAis140TicketsPageTest.java
-      Executor.java
-  testNG.xml
-  GitManager.sh
-  pom.xml
+src/main/java/com/aepl/atcu/
+  base/
+    TestBase.java
+  listeners/
+    TestListener.java
+    RetryFailedTestListener.java
+    Transformer.java
+  locators/
+    CommonPageLocators.java
+    DeviceDashboardPageLocators.java
+    LoginPageLocators.java
+  pages/
+    LoginPage.java
+    DeviceDashboardPage.java
+    DeviceModelPage.java
+    DispachedDevicePage.java
+    OtaPage.java
+    DealearFotaPage.java
+    MyAis140TicketsPage.java
+    ChangeMobilePage.java
+  util/
+    PageActionsUtil.java
+    PageAssertionsUtil.java
+    TableUtils.java
+    FormUtils.java
+    RandomGeneratorUtils.java
+    MouseActions.java
+    CalendarActions.java
+    ExcelUtility.java
+    ConfigProperties.java
+    Constants.java
+    Result.java
+    ExtentManager.java
+    ExtentTestManager.java
+    EmailReader.java
+    WebDriverFactory.java
+
+src/test/java/com/aepl/atcu/tests/
+  Executor.java
+  LoginPageTest.java
+  DeviceDashboardPageTest.java
+  DeviceModelPageTest.java
+  DispatchedDevicePageTest.java
+  OtaPageTest.java
+  DealerFotaPageTest.java
+  MyAis140TicketsPageTest.java
+
+testNG.xml
+pom.xml
+README.md
 ```
 
-## Test Modules Currently Present
+## Test Suite Classes (Active)
 
-The following TestNG classes exist in source:
+Configured in `testNG.xml`:
 
-- `LoginPageTest`
-- `DeviceDashboardPageTest`
-- `MyAis140TicketsPageTest`
-- `OtaPageTest`
-- `DeviceModelPageTest`
-- `DealerFotaPageTest`
-- `DispatchedDevicePageTest`
+- `com.aepl.atcu.tests.LoginPageTest`
+- `com.aepl.atcu.tests.DeviceDashboardPageTest`
+- `com.aepl.atcu.tests.MyAis140TicketsPageTest`
+- `com.aepl.atcu.tests.OtaPageTest`
+- `com.aepl.atcu.tests.DeviceModelPageTest`
+- `com.aepl.atcu.tests.DealerFotaPageTest`
+- `com.aepl.atcu.tests.DispatchedDevicePageTest`
 
-## How Test Execution Works
+## Refactored Test Pattern
 
-- `TestBase` initializes WebDriver in `@BeforeClass`.
-- Environment properties are loaded via `ConfigProperties.initialize("qa")`.
-- Base URL is opened from `Constants.BASE_URL`.
-- Non-login test classes auto-login in setup.
-- `@BeforeMethod` applies browser zoom (67%) via JavaScript.
-- `@AfterSuite` attempts logout and quits the browser.
-- `TestListener` captures status to Extent report and screenshots on failure.
+Recent test refactors (`DealerFotaPageTest`, `DispatchedDevicePageTest`, `OtaPageTest`, `DeviceModelPageTest`, `MyAis140TicketsPageTest`) follow:
 
-## Prerequisites
+1. Unified `setUp()`:
+   - page object init
+   - `ExcelUtility` init
+   - `SoftAssert` init
+   - `Executor` init
+2. `executor.executeTest(testName, expected, actualSupplier)` in each test
+3. Standardized pass/fail/error logging to Excel
+4. Reduced duplicated `try/catch/finally` in test classes
 
-- JDK 17 installed and configured (`JAVA_HOME`)
-- Maven 3.8+
-- Chrome/Firefox/Brave installed (as needed)
-- Network access to test environment URLs used by the framework
+## Base Lifecycle
 
-Notes:
+`TestBase` responsibilities:
 
-- Brave execution uses a hardcoded Windows path in `WebDriverFactory`:
-  `C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe`
-- Chrome/Firefox drivers are auto-managed by WebDriverManager.
+- initializes environment using `ConfigProperties.initialize("qa")`
+- creates driver and wait
+- opens base URL from constants
+- auto-login for non-`LoginPageTest` classes
+- applies browser zoom (67%) before each test method
+- performs logout and quits driver in suite teardown
 
-## Configuration
+## How to Run
 
-The framework reads environment properties from:
-
-- `src/main/resources/<env>.config.properties`
-
-Current setup calls:
-
-- `ConfigProperties.initialize("qa")`
-
-So you must provide:
-
-- `src/main/resources/qa.config.properties`
-
-Based on code usage, properties referenced include keys such as:
-
-- `browser`
-- `username`, `password`
-- `valid.username`, `valid.password`
-- `dashboard.url`
-- `ota`, `ota.master`
-- `device.model`, `add.device.model`
-- `dealer.fota`, `upload.csv`
-- `Add.Dispatch.Devices`
-- `myTickets.url`
-
-## Build
-
-```bash
-mvn clean install
-```
-
-## Run Tests
-
-Run all Maven-detected tests:
+Run full suite (`testNG.xml` via Surefire):
 
 ```bash
 mvn test
 ```
 
-Run a specific class:
+Compile only:
 
 ```bash
-mvn -Dtest=LoginPageTest test
+mvn -DskipTests compile
 ```
 
-Run using TestNG suite XML:
+Run single test class:
 
 ```bash
-mvn -DtestngXmlFile=testNG.xml test
+mvn -Dtest=DeviceDashboardPageTest test
 ```
 
-## Output Artifacts
+## Outputs
 
-After execution, check:
+Generated artifacts:
 
-- `test-results/*.xlsx` for Excel status logs
-- `test-results/ExtentReport.html` for Extent dashboard
-- `logs/test-automation.log` for consolidated logs
-- `screenshots/` for failure screenshots (created at runtime)
-- `test-output/` for TestNG default output
+- `test-results/*.xlsx` (per-test result logs)
+- `test-results/ExtentReport.html` (extent report)
+- `screenshots/` (failure screenshots)
+- `logs/` (execution logs)
+- `test-output/` (default TestNG output)
 
-## Utility Script
+## Prerequisites
 
-`GitManager.sh` performs:
+- JDK 17+
+- Maven 3.8+
+- Supported browser installed (configured via environment properties)
+- Access to target QA environment and APIs required by tests
 
-- cleanup of generated folders
-- `mvn clean install`
-- git add/commit/push workflow
+## Notes
 
-Use with caution because it stages all changes (`git add .`).
-
-
-## Recommended Cleanup (Optional)
-
-To stabilize suite execution, align `testNG.xml` with actual class names/packages currently present in `src/test/java/com/aepl/atcu/tests`.
-
-## Maintainers
-
-Automation Team - AEPL ATCU 4G
+- `pom.xml` is configured with `maven-surefire-plugin` to execute `testNG.xml`.
+- API helper flows are used in specific page/test flows (not all suites are pure UI).
+- Some legacy page classes still contain large method sets and can be further modularized incrementally.

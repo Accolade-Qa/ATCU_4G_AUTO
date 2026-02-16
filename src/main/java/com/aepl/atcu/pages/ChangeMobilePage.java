@@ -8,34 +8,27 @@ import java.util.stream.Collectors;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.aepl.atcu.locators.ChangeMobilePageLocators;
 import com.aepl.atcu.util.Constants;
+import com.aepl.atcu.util.PageActionsUtil;
 
-public class ChangeMobilePage {
+public class ChangeMobilePage extends ChangeMobilePageLocators {
 	private final WebDriver driver;
 	private final WebDriverWait wait;
+	private final PageActionsUtil pageActionsUtil;
 	private static final Logger logger = LogManager.getLogger(ChangeMobilePage.class);
 
 	public ChangeMobilePage(WebDriver driver) {
 		this.driver = driver;
 		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		this.pageActionsUtil = new PageActionsUtil(driver, wait);
 	}
-
-	// Locators Goes here
-	private final By navBarLink = By.xpath("//span[@class=\"headers_custom color_3D5772\"]");
-	private final By changeMobile = By.xpath("//a[@class=\"dropdown-item ng-star-inserted\"][8]");
-	private final By searchBox = By.xpath("//input[@placeholder=\"Search and Press Enter\"]");
-	private final By tableHeadings = By.xpath("//tr[@class=\"text-center\"]");
-	private final By eyeActionButtons = By.xpath("//td[@class = \"ng-star-inserted\"][1]");
-	private final By deleteActionButtons = By.xpath("//td[@class = \"ng-star-inserted\"][2]");
-	private final By paginationNextButton = By.xpath("//li[@class=\\\"pagination-next ng-star-inserted\\\"");
-	private final By paginationPreviousButton = By.xpath("//li[@class=\\\"pagination-previous ng-star-inserted\\\"]");
 
 	// Methods Goes here
 	public void clickNavBar() {
@@ -152,7 +145,7 @@ public class ChangeMobilePage {
 				logger.info("Next button located. Clicking on it.");
 				nextButton.click();
 
-				wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//expectedElementOnNextPage")));
+				wait.until(ExpectedConditions.visibilityOfElementLocated(expectedElementOnNextPage));
 				logger.info("Successfully navigated to the next page.");
 			} else {
 				logger.warn("Next button is not clickable.");
@@ -163,13 +156,14 @@ public class ChangeMobilePage {
 			if (previousButton.isDisplayed() && previousButton.isEnabled()) {
 				logger.info("Previous button located. Clicking on it.");
 				previousButton.click();
-				wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//expectedElementOnPreviousPage")));
+				wait.until(ExpectedConditions.visibilityOfElementLocated(expectedElementOnPreviousPage));
 				logger.info("Successfully navigated back to the previous page.");
 			} else {
 				logger.warn("Previous button is not clickable.");
 			}
 		} catch (Exception e) {
 			logger.error("An error occurred while testing pagination.", e);
+			pageActionsUtil.captureScreenshot("change-mobile-pagination");
 			throw new RuntimeException("Pagination test failed.", e);
 		}
 	}
