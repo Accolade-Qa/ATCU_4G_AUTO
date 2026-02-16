@@ -16,17 +16,18 @@ import com.aepl.atcu.locators.LoginPageLocators;
 import com.aepl.atcu.util.ConfigProperties;
 import com.aepl.atcu.util.Constants;
 import com.aepl.atcu.util.EmailReader;
+import com.aepl.atcu.util.PageActionsUtil;
 
 public class LoginPage extends LoginPageLocators {
 	private WebDriver driver;
 	private WebDriverWait wait;
-	private CommonMethods comm;
+	private PageActionsUtil comm;
 	private static final Logger logger = LogManager.getLogger(LoginPage.class);
 
 	public LoginPage(WebDriver driver, WebDriverWait wait) {
 		this.driver = driver;
 		this.wait = wait;
-		this.comm = new CommonMethods(driver, wait);
+		this.comm = new PageActionsUtil(driver, wait);
 	}
 
 	public LoginPage enterUsername(String username) {

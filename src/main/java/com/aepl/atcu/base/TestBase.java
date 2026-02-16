@@ -11,8 +11,8 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 
-import com.aepl.atcu.actions.MouseActions;
 import com.aepl.atcu.pages.LoginPage;
+import com.aepl.atcu.util.MouseActions;
 import com.aepl.atcu.util.ConfigProperties;
 import com.aepl.atcu.util.Constants;
 import com.aepl.atcu.util.WebDriverFactory;

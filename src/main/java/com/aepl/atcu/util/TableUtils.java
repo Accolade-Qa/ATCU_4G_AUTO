@@ -33,6 +33,16 @@ public class TableUtils {
 
     // ================= HEADERS =================
 
+    public boolean isTableVisible(By tableLocator) {
+        try {
+            WebElement table = wait.until(ExpectedConditions.visibilityOfElementLocated(tableLocator));
+            return table.isDisplayed();
+        } catch (Exception e) {
+            logger.error("Table visibility check failed for locator: {}", tableLocator, e);
+            return false;
+        }
+    }
+
     public List<String> getTableHeaders(By tableLocator) {
         try {
             WebElement table = wait.until(ExpectedConditions.visibilityOfElementLocated(tableLocator));
@@ -54,6 +64,10 @@ public class TableUtils {
             logger.error("Table not visible: {}", tableLocator, e);
             return Collections.emptyList();
         }
+    }
+
+    public boolean hasTableHeaders(By tableLocator) {
+        return !getTableHeaders(tableLocator).isEmpty();
     }
 
     // ================= TABLE DATA =================
@@ -99,6 +113,17 @@ public class TableUtils {
         }
 
         return tableData;
+    }
+
+    public boolean hasTableDataOrNoDataState(By tableLocator) {
+        try {
+            List<String> headers = getTableHeaders(tableLocator);
+            List<Map<String, String>> rows = getTableData(tableLocator, headers);
+            return !rows.isEmpty() || isNoDataImagePresent(tableLocator);
+        } catch (Exception e) {
+            logger.error("Error validating table data/no-data state for locator: {}", tableLocator, e);
+            return false;
+        }
     }
 
     private String extractCellValue(WebElement cell) {

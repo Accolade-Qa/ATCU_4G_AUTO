@@ -5,14 +5,14 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import com.aepl.atcu.base.TestBase;
-import com.aepl.atcu.pages.CommonMethods;
 import com.aepl.atcu.pages.DeviceDashboardPage;
 import com.aepl.atcu.util.ExcelUtility;
+import com.aepl.atcu.util.PageAssertionsUtil;
 
 public class DeviceDashboardPageTest extends TestBase {
 
 	private DeviceDashboardPage page;
-	private CommonMethods common;
+	private PageAssertionsUtil common;
 	private ExcelUtility excel;
 	private SoftAssert softAssert;
 	private Executor executor;
@@ -22,7 +22,7 @@ public class DeviceDashboardPageTest extends TestBase {
 	public void setUp() {
 		super.setUp();
 		this.page = new DeviceDashboardPage(driver, wait, action);
-		this.common = new CommonMethods(driver, wait);
+		this.common = new PageAssertionsUtil(driver, wait);
 		this.softAssert = new SoftAssert();
 		this.excel = new ExcelUtility();
 		this.executor = new Executor(excel, softAssert);
@@ -231,24 +231,65 @@ public class DeviceDashboardPageTest extends TestBase {
 	}
 
 	// Verify Page Number Click
+	@Test(priority = 32)
+	public void testPageNumberClick() {
+		executor.executeTest("Validate page number click on table", true, page::validatePageNumberClick);
+	}
 
 	// Verify Pagination Hidden When No Data
+	@Test(priority = 33)
+	public void testPaginationHiddenWhenNoData() {
+		executor.executeTest("Validate pagination hidden when table has no data", true,
+				page::validatePaginationHiddenWhenNoData);
+	}
 
 	// Verify Card 2 Visible
+	@Test(priority = 34)
+	public void testCard2Visible() {
+		executor.executeTest("Verify Card 2 visible", true, page::validateCard2IsVisible);
+	}
 
 	// Verify Card 2 Count
+	@Test(priority = 35)
+	public void testCard2Count() {
+		executor.executeTest("Verify Card 2 count format", true, page::validateCard2CountFormat);
+	}
 
 	// Verify Card 2 Click
+	@Test(priority = 36)
+	public void testCard2Click() {
+		executor.executeTest("Verify Card 2 clickable", true, page::validateCard2Clickable);
+	}
 
 	// Verify Table Visible
+	@Test(priority = 37)
+	public void testCard2TableVisible() {
+		executor.executeTest("Verify Card 2 table visible after click", true, page::validateCard2TableVisible);
+	}
 
 	// Verify Headers
+	@Test(priority = 38)
+	public void testCard2TableHeaders() {
+		executor.executeTest("Verify Card 2 table headers", true, page::validateCard2TableHeaders);
+	}
 
 	// Verify Buttons
+	@Test(priority = 39)
+	public void testCard2TableButtons() {
+		executor.executeTest("Verify Card 2 table action buttons", true, page::validateCard2TableButtons);
+	}
 
 	// Verify Row Data
+	@Test(priority = 40)
+	public void testCard2RowDataVisible() {
+		executor.executeTest("Verify Card 2 table row data visibility", true, page::validateCard2TableDataVisible);
+	}
 
 	// Verify Download Visible
+	@Test(priority = 41)
+	public void testCard2DownloadVisible() {
+		executor.executeTest("Verify Card 2 download button visible", true, page::validateCard2DownloadButtonVisible);
+	}
 
 	// Verify Download Enabled
 

@@ -8,18 +8,18 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import com.aepl.atcu.base.TestBase;
-import com.aepl.atcu.pages.CommonMethods;
 import com.aepl.atcu.pages.LoginPage;
 import com.aepl.atcu.util.ConfigProperties;
 import com.aepl.atcu.util.Constants;
 import com.aepl.atcu.util.ExcelUtility;
+import com.aepl.atcu.util.PageAssertionsUtil;
 import com.aepl.atcu.util.RandomGeneratorUtils;
 
 public class LoginPageTest extends TestBase {
 
 	private LoginPage loginPage;
 	private ExcelUtility excelUtility;
-	private CommonMethods comm;
+	private PageAssertionsUtil comm;
 	private SoftAssert softAssert;
 	private Executor executor;
 	private RandomGeneratorUtils randomGen;
@@ -29,7 +29,7 @@ public class LoginPageTest extends TestBase {
 	public void setUp() {
 		super.setUp();
 		this.loginPage = new LoginPage(driver, wait);
-		this.comm = new CommonMethods(driver, wait);
+		this.comm = new PageAssertionsUtil(driver, wait);
 		this.excelUtility = new ExcelUtility();
 		this.softAssert = new SoftAssert();
 		this.executor = new Executor(excelUtility, softAssert);

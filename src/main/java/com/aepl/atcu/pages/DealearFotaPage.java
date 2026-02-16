@@ -18,16 +18,18 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.aepl.atcu.util.PageActionsUtil;
+
 public class DealearFotaPage {
 	private final WebDriver driver;
 	private final WebDriverWait wait;
-	private final CommonMethods commonMethod;
+	private final PageActionsUtil commonMethod;
 	private static final Logger logger = LogManager.getLogger(DealearFotaPage.class);
 
 	public DealearFotaPage(WebDriver driver) {
 		this.driver = driver;
 		this.wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-		this.commonMethod = new CommonMethods(driver, wait);
+		this.commonMethod = new PageActionsUtil(driver, wait);
 		logger.info("Initialized the driver and wait ");
 	}
 
@@ -81,7 +83,7 @@ public class DealearFotaPage {
 
 	public void checkPagination() {
 		try {
-			logger.info("Starting pagination validation using CommonMethod.");
+			logger.info("Starting pagination validation using PageActionsUtil.");
 
 			WebElement nextButton = wait.until(ExpectedConditions.presenceOfElementLocated(nextBtn));
 			WebElement prevButton = wait.until(ExpectedConditions.presenceOfElementLocated(prevBtn));

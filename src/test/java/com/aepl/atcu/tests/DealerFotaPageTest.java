@@ -4,17 +4,17 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.aepl.atcu.base.TestBase;
-import com.aepl.atcu.pages.CommonMethods;
 import com.aepl.atcu.pages.DealearFotaPage;
 import com.aepl.atcu.pages.LoginPage;
 import com.aepl.atcu.util.ConfigProperties;
 import com.aepl.atcu.util.ExcelUtility;
+import com.aepl.atcu.util.PageActionsUtil;
 
 public class DealerFotaPageTest extends TestBase {
 	private LoginPage loginPage;
 	private ExcelUtility excelUtility;
 	private DealearFotaPage dealerFota;
-	private CommonMethods commonMethod;
+	private PageActionsUtil commonMethod;
 
 	@BeforeClass
 	public void setUp() {
@@ -22,7 +22,7 @@ public class DealerFotaPageTest extends TestBase {
 		this.loginPage = new LoginPage(driver, null);
 		this.dealerFota = new DealearFotaPage(driver);
 		this.excelUtility = new ExcelUtility();
-		this.commonMethod = new CommonMethods(driver, null);
+		this.commonMethod = new PageActionsUtil(driver, wait);
 		excelUtility.initializeExcel("Dealer_FOTA_Test");
 	}
 

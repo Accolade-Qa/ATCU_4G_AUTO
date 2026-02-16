@@ -15,4 +15,7 @@ public class DeviceDashboardPageLocators {
 	public static final By PAGE_INFO = By.xpath("//span[contains(@class,'page-info')]");
 	public static final By NEXT_PAGE_BUTTON = By.xpath("//button[.//mat-icon[contains(text(),'chevron_right')]]");
 	public static final By PREVIOUS_PAGE_BUTTON = By.xpath("//button[.//mat-icon[contains(text(),'chevron_left')]]");
+	public static final By PAGE_NUMBER_BUTTONS = By.xpath("//div[contains(@class,'currentPage-numbers')]//button[not(@disabled)]");
+	public static final By KPI_CARDS = By.xpath("//div[contains(@class,'kpi-section')]/div");
+	public static final By COMPONENT_TITLE = By.cssSelector(".component-title");
 }

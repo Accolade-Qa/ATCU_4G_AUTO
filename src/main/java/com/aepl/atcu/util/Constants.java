@@ -27,6 +27,7 @@ public class Constants {
     public static final String OTA_LINK = BASE_URL + "/ota-batch-page";
     public static final String SIM_MANUAL_UPLOAD = BASE_URL + "/sensorise-sim-manual-upload";
     public static final String DEVICE_URL = "http://aepl-tcu4g-qa.accoladeelectronics.com:6102/device-batch";
+    public static final String CHANGE_MOBILE_VIEW = BASE_URL + "/change-mobile";
 
     // Footer
     public static final String EXP_VERSION_TEXT = "Version: 4.2.3";

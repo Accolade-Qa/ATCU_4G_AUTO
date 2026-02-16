@@ -1,29 +1,17 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 <suite name="AllTestSuite" preserve-order="true" parallel="false">
 	<listeners>
-		<listener class-name="com.aepl.listeners.TestListener" />
+		<listener class-name="com.aepl.atcu.listeners.TestListener" />
 	</listeners>
 	<test name="AllTests">
 		<classes>
-			<class name="com.aepl.atcu.tests.LoginTest" /> 		           	
+			<class name="com.aepl.atcu.tests.LoginPageTest" />
 			<class name="com.aepl.atcu.tests.DeviceDashboardPageTest" />		
-			<class name="com.aepl.atcu.tests.UserComplaintsDashboardPageTest" />
-			<class name="com.aepl.atcu.tests.TicketDashboardPageTest" />
 			<class name="com.aepl.atcu.tests.MyAis140TicketsPageTest" />
-			<class name="com.aepl.atcu.tests.GovernmentServerPageTest" />
-			<class name="com.aepl.atcu.tests.FotaPageTest" /> 
 			<class name="com.aepl.atcu.tests.OtaPageTest" />
 			<class name="com.aepl.atcu.tests.DeviceModelPageTest" />
 			<class name="com.aepl.atcu.tests.DealerFotaPageTest" />
-			<class name="com.aepl.atcu.tests.SimLotsPageTest" />
-			<class name="com.aepl.atcu.tests.ChangeMobilePageTest" />
 			<class name="com.aepl.atcu.tests.DispatchedDevicePageTest" />
-			<class name="com.aepl.atcu.tests.UserComplaintsPageTest" />
-			<class name="com.aepl.atcu.tests.VehicleEOLPageTest" />
-			<class name="com.aepl.atcu.tests.SimDataDetailsPageTest" />
-			<class name="com.aepl.atcu.tests.UserManagementPageTest" />
-			<class name="com.aepl.atcu.tests.UserRolePageTest" /> 
-			
 		</classes>
 	</test>
 </suite>

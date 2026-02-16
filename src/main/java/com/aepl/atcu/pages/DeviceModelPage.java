@@ -16,11 +16,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.aepl.atcu.util.PageActionsUtil;
+
 public class DeviceModelPage {
 	// Global variables
 	private final WebDriver driver;
 	private final WebDriverWait wait;
-	private CommonMethods commonMethod;
+	private PageActionsUtil commonMethod;
 	private final Logger logger = LogManager.getLogger(DeviceModelPage.class);
 
 	// Locators
@@ -43,7 +45,7 @@ public class DeviceModelPage {
 	public DeviceModelPage(WebDriver driver) {
 		this.driver = driver;
 		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-		this.commonMethod = new CommonMethods(driver, wait);
+		this.commonMethod = new PageActionsUtil(driver, wait);
 	}
 
 	// Methods Goes here

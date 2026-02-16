@@ -5,17 +5,17 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.aepl.atcu.base.TestBase;
-import com.aepl.atcu.pages.CommonMethods;
 import com.aepl.atcu.pages.DeviceModelPage;
 import com.aepl.atcu.pages.LoginPage;
 import com.aepl.atcu.util.ConfigProperties;
 import com.aepl.atcu.util.ExcelUtility;
+import com.aepl.atcu.util.PageActionsUtil;
 
 public class DeviceModelPageTest extends TestBase {
 	private LoginPage loginPage;
 	private DeviceModelPage deviceModel;
 	private ExcelUtility excelUtility;
-	private CommonMethods commonMethod;
+	private PageActionsUtil commonMethod;
 
 	@Override
 	@BeforeClass
@@ -23,6 +23,7 @@ public class DeviceModelPageTest extends TestBase {
 		super.setUp();
 		deviceModel = new DeviceModelPage(driver);
 		loginPage = new LoginPage(driver, null);
+		commonMethod = new PageActionsUtil(driver, wait);
 		excelUtility = new ExcelUtility();
 		excelUtility.initializeExcel("Device Model");
 	}

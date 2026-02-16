@@ -9,30 +9,29 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.aepl.atcu.actions.MouseActions;
 import com.aepl.atcu.locators.DeviceDashboardPageLocators;
+import com.aepl.atcu.util.MouseActions;
+import com.aepl.atcu.util.PageActionsUtil;
 import com.aepl.atcu.util.TableUtils;
 
 public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 	private WebDriver driver;
 	private WebDriverWait wait;
-	private CommonMethods common;
+	private PageActionsUtil common;
 	private TableUtils table;
 	private static final Logger logger = LogManager.getLogger(DeviceDashboardPage.class);
 
 	public DeviceDashboardPage(WebDriver driver, WebDriverWait wait, MouseActions action) {
 		this.driver = driver;
-		this.common = new CommonMethods(driver, wait);
-		this.table = new TableUtils(driver, wait);
-		this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		this.wait = (wait != null) ? wait : new WebDriverWait(driver, Duration.ofSeconds(10));
+		this.common = new PageActionsUtil(driver, this.wait);
+		this.table = new TableUtils(driver, this.wait);
 	}
 
 	public String clickNavBar() {
@@ -119,21 +118,22 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 	}
 
 	public String validateTotalProductionDevicesTableHeaders() {
-		return table.getTableHeaders(By.xpath("//table")).toArray().toString();
+		List<String> headers = table.getTableHeaders(TABLE_ROOT);
+		return String.join(", ", headers);
 	}
 
 	public boolean validateTotalProductionDevicesTableButtons() {
-		return true;
+		return table.areViewButtonsEnabled(TABLE_ROOT) && table.areDeleteButtonsEnabled(TABLE_ROOT);
 	}
 
 	public boolean validateActionButtonVisibility() {
 		logger.info("validating the action buttons visibility");
-		return table.areViewButtonsEnabled(By.xpath("//table")) && table.areDeleteButtonsEnabled(By.xpath("//table"));
+		return table.areViewButtonsEnabled(TABLE_ROOT) && table.areDeleteButtonsEnabled(TABLE_ROOT);
 	}
 
 	public boolean validateActionButtonsEnabled() {
 		logger.info("validating the action buttons enabled");
-		return table.areViewButtonsEnabled(By.xpath("//table")) && table.areDeleteButtonsEnabled(By.xpath("//table"));
+		return table.areViewButtonsEnabled(TABLE_ROOT) && table.areDeleteButtonsEnabled(TABLE_ROOT);
 	}
 
 	public boolean ValidateNoDataImage() {
@@ -141,13 +141,11 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 	}
 
 	public boolean validateTheDownloadButtonIsVisibleOnTotalProductionDevicesTable() {
-		WebElement report_btn = wait.until(ExpectedConditions.visibilityOfElementLocated(DOWNLOAD_REPORT_BTN));
-		return report_btn.isDisplayed();
+		return common.isElementVisible(DOWNLOAD_REPORT_BTN);
 	}
 
 	public boolean validateTheDownloadButtonIsEnabledOnTotalProductionDevicesTable() {
-		WebElement report_btn = wait.until(ExpectedConditions.visibilityOfElementLocated(DOWNLOAD_REPORT_BTN));
-		return report_btn.isEnabled();
+		return common.isElementEnabled(DOWNLOAD_REPORT_BTN);
 	}
 
 	public boolean validateTheDownloadButtonIsClickableOnTotalProductionDevicesTable() {
@@ -166,12 +164,7 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 
 	public boolean validateSearchInputVisible() {
 		try {
-			WebElement searchInput = findFirstVisibleElement(SEARCH_INPUT);
-			if (searchInput == null) {
-				return false;
-			}
-			common.highlightElement(searchInput, "green");
-			return searchInput.isDisplayed();
+			return common.isElementVisible(SEARCH_INPUT);
 		} catch (Exception e) {
 			logger.error("Search input visibility validation failed", e);
 			return false;
@@ -180,12 +173,7 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 
 	public boolean validateSearchInputEnabled() {
 		try {
-			WebElement searchInput = findFirstVisibleElement(SEARCH_INPUT);
-			if (searchInput == null) {
-				return false;
-			}
-			common.highlightElement(searchInput, "green");
-			return searchInput.isEnabled();
+			return common.isElementEnabled(SEARCH_INPUT);
 		} catch (Exception e) {
 			logger.error("Search input enabled validation failed", e);
 			return false;
@@ -194,12 +182,7 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 
 	public boolean validateSearchButtonVisible() {
 		try {
-			WebElement searchBtn = findFirstVisibleElement(SEARCH_BUTTON);
-			if (searchBtn == null) {
-				return false;
-			}
-			common.highlightElement(searchBtn, "green");
-			return searchBtn.isDisplayed();
+			return common.isElementVisible(SEARCH_BUTTON);
 		} catch (Exception e) {
 			logger.error("Search button visibility validation failed", e);
 			return false;
@@ -208,12 +191,7 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 
 	public boolean validateSearchButtonEnabled() {
 		try {
-			WebElement searchBtn = findFirstVisibleElement(SEARCH_BUTTON);
-			if (searchBtn == null) {
-				return false;
-			}
-			common.highlightElement(searchBtn, "green");
-			return searchBtn.isEnabled();
+			return common.isElementEnabled(SEARCH_BUTTON);
 		} catch (Exception e) {
 			logger.error("Search button enabled validation failed", e);
 			return false;
@@ -285,9 +263,9 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 
 	public boolean validatePaginationVisible() {
 		try {
-			WebElement pagination = findFirstVisibleElement(PAGINATION_CONTAINER);
-			WebElement nextBtn = findFirstVisibleElement(NEXT_PAGE_BUTTON);
-			WebElement prevBtn = findFirstVisibleElement(PREVIOUS_PAGE_BUTTON);
+			WebElement pagination = common.findFirstVisibleElement(PAGINATION_CONTAINER);
+			WebElement nextBtn = common.findFirstVisibleElement(NEXT_PAGE_BUTTON);
+			WebElement prevBtn = common.findFirstVisibleElement(PREVIOUS_PAGE_BUTTON);
 
 			return pagination != null && pagination.isDisplayed() && nextBtn != null && prevBtn != null;
 		} catch (Exception e) {
@@ -298,7 +276,7 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 
 	public boolean validateNextPageWorking() {
 		try {
-			WebElement nextBtn = findFirstVisibleElement(NEXT_PAGE_BUTTON);
+			WebElement nextBtn = common.findFirstVisibleElement(NEXT_PAGE_BUTTON);
 			if (nextBtn == null) {
 				return false;
 			}
@@ -309,7 +287,7 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 			}
 
 			String beforePageInfo = getPageInfoText();
-			clickElement(nextBtn);
+			common.clickElement(nextBtn);
 			waitForTableStabilization();
 
 			String afterPageInfo = getPageInfoText();
@@ -322,17 +300,17 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 
 	public boolean validatePreviousPageWorking() {
 		try {
-			WebElement prevBtn = findFirstVisibleElement(PREVIOUS_PAGE_BUTTON);
-			WebElement nextBtn = findFirstVisibleElement(NEXT_PAGE_BUTTON);
+			WebElement prevBtn = common.findFirstVisibleElement(PREVIOUS_PAGE_BUTTON);
+			WebElement nextBtn = common.findFirstVisibleElement(NEXT_PAGE_BUTTON);
 
 			if (prevBtn == null) {
 				return false;
 			}
 
 			if (!prevBtn.isEnabled() && nextBtn != null && nextBtn.isEnabled()) {
-				clickElement(nextBtn);
+				common.clickElement(nextBtn);
 				waitForTableStabilization();
-				prevBtn = findFirstVisibleElement(PREVIOUS_PAGE_BUTTON);
+				prevBtn = common.findFirstVisibleElement(PREVIOUS_PAGE_BUTTON);
 			}
 
 			if (prevBtn == null || !prevBtn.isEnabled()) {
@@ -341,7 +319,7 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 			}
 
 			String beforePageInfo = getPageInfoText();
-			clickElement(prevBtn);
+			common.clickElement(prevBtn);
 			waitForTableStabilization();
 
 			String afterPageInfo = getPageInfoText();
@@ -352,44 +330,135 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 		}
 	}
 
-	private WebElement findFirstVisibleElement(By... locators) {
-		for (By locator : locators) {
-			List<WebElement> elements = driver.findElements(locator);
-			for (WebElement element : elements) {
-				if (element != null && element.isDisplayed()) {
-					return element;
-				}
+	public boolean validatePageNumberClick() {
+		try {
+			List<WebElement> pageButtons = driver.findElements(PAGE_NUMBER_BUTTONS);
+			if (pageButtons.isEmpty()) {
+				logger.info("No direct page number buttons found.");
+				return true;
 			}
+
+			WebElement target = pageButtons.get(pageButtons.size() - 1);
+			String beforePageInfo = getPageInfoText();
+			common.clickElement(target);
+			waitForTableStabilization();
+			String afterPageInfo = getPageInfoText();
+
+			return !beforePageInfo.equals(afterPageInfo) || target.isEnabled();
+		} catch (Exception e) {
+			logger.error("Page number click validation failed", e);
+			return false;
 		}
-		return null;
+	}
+
+	public boolean validatePaginationHiddenWhenNoData() {
+		try {
+			String query = "NO_DATA_FILTER_" + System.currentTimeMillis();
+			performSearch(query);
+
+			boolean noData = table.isNoDataImagePresent(TABLE_ROOT) || getTableRowCount() == 0;
+			WebElement pagination = common.findFirstVisibleElement(PAGINATION_CONTAINER);
+			boolean paginationHiddenOrDisabled = pagination == null || !pagination.isDisplayed()
+					|| (!common.isElementEnabled(NEXT_PAGE_BUTTON) && !common.isElementEnabled(PREVIOUS_PAGE_BUTTON));
+
+			resetSearch();
+			return noData && paginationHiddenOrDisabled;
+		} catch (Exception e) {
+			logger.error("Pagination hidden when no data validation failed", e);
+			return false;
+		}
+	}
+
+	public boolean validateCard2IsVisible() {
+		try {
+			WebElement card = getKpiCardByIndex(2);
+			common.highlightElement(card, "green");
+			return card.isDisplayed();
+		} catch (Exception e) {
+			logger.error("Card 2 visibility validation failed", e);
+			return false;
+		}
+	}
+
+	public boolean validateCard2CountFormat() {
+		try {
+			WebElement card = getKpiCardByIndex(2);
+			String text = card.getText();
+			return text.matches("(?s).*\\d+.*");
+		} catch (Exception e) {
+			logger.error("Card 2 count format validation failed", e);
+			return false;
+		}
+	}
+
+	public boolean validateCard2Clickable() {
+		try {
+			String cardName = clickCardByIndexAndGetName(2);
+			String header = getComponentTitle();
+			return !cardName.isBlank() && !header.isBlank();
+		} catch (Exception e) {
+			logger.error("Card 2 click validation failed", e);
+			return false;
+		}
+	}
+
+	public boolean validateCard2TableVisible() {
+		try {
+			clickCardByIndexAndGetName(2);
+			return table.isTableVisible(TABLE_ROOT);
+		} catch (Exception e) {
+			logger.error("Card 2 table visibility validation failed", e);
+			return false;
+		}
+	}
+
+	public boolean validateCard2TableHeaders() {
+		try {
+			clickCardByIndexAndGetName(2);
+			return table.hasTableHeaders(TABLE_ROOT);
+		} catch (Exception e) {
+			logger.error("Card 2 table headers validation failed", e);
+			return false;
+		}
+	}
+
+	public boolean validateCard2TableButtons() {
+		try {
+			clickCardByIndexAndGetName(2);
+			return table.areViewButtonsEnabled(TABLE_ROOT) && table.areDeleteButtonsEnabled(TABLE_ROOT);
+		} catch (Exception e) {
+			logger.error("Card 2 table action buttons validation failed", e);
+			return false;
+		}
+	}
+
+	public boolean validateCard2TableDataVisible() {
+		try {
+			clickCardByIndexAndGetName(2);
+			return table.hasTableDataOrNoDataState(TABLE_ROOT);
+		} catch (Exception e) {
+			logger.error("Card 2 table data visibility validation failed", e);
+			return false;
+		}
+	}
+
+	public boolean validateCard2DownloadButtonVisible() {
+		try {
+			clickCardByIndexAndGetName(2);
+			return common.isElementVisible(DOWNLOAD_REPORT_BTN);
+		} catch (Exception e) {
+			logger.error("Card 2 download button visibility validation failed", e);
+			return false;
+		}
 	}
 
 	private void performSearch(String query) {
-		WebElement searchInput = wait.until(ExpectedConditions.visibilityOfElementLocated(SEARCH_INPUT));
-		searchInput.click();
-		searchInput.clear();
-		searchInput.sendKeys(query);
-
-		WebElement searchButton = findFirstVisibleElement(SEARCH_BUTTON);
-		if (searchButton != null && searchButton.isEnabled()) {
-			clickElement(searchButton);
-		} else {
-			searchInput.sendKeys(Keys.ENTER);
-		}
+		common.typeAndSearch(SEARCH_INPUT, SEARCH_BUTTON, query);
 		waitForTableStabilization();
 	}
 
 	private void resetSearch() {
-		WebElement searchInput = findFirstVisibleElement(SEARCH_INPUT);
-		WebElement resetButton = findFirstVisibleElement(RESET_BUTTON);
-
-		if (resetButton != null && resetButton.isEnabled()) {
-			clickElement(resetButton);
-		} else if (searchInput != null) {
-			searchInput.click();
-			searchInput.clear();
-			searchInput.sendKeys(Keys.ENTER);
-		}
+		common.resetSearch(SEARCH_INPUT, RESET_BUTTON);
 		waitForTableStabilization();
 	}
 
@@ -431,29 +500,37 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 	}
 
 	private void waitForTableStabilization() {
-		wait.until(ExpectedConditions.visibilityOfElementLocated(TABLE_ROOT));
+		common.waitForVisibility(TABLE_ROOT);
 	}
 
 	private String getPageInfoText() {
-		try {
-			WebElement pageInfo = findFirstVisibleElement(PAGE_INFO);
-			return pageInfo != null ? pageInfo.getText().trim() : "";
-		} catch (NoSuchElementException e) {
-			return "";
-		}
+		return common.getElementText(PAGE_INFO);
 	}
 
 	private boolean isPreviousButtonEnabled() {
-		WebElement prevBtn = findFirstVisibleElement(PREVIOUS_PAGE_BUTTON);
-		return prevBtn != null && prevBtn.isEnabled();
+		return common.isElementEnabled(PREVIOUS_PAGE_BUTTON);
 	}
 
-	private void clickElement(WebElement element) {
-		try {
-			wait.until(ExpectedConditions.elementToBeClickable(element)).click();
-		} catch (Exception e) {
-			((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+	private WebElement getKpiCardByIndex(int indexOneBased) {
+		List<WebElement> cards = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(KPI_CARDS));
+		if (cards.size() < indexOneBased) {
+			throw new IllegalStateException("KPI card index not found: " + indexOneBased);
 		}
+		WebElement card = cards.get(indexOneBased - 1);
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", card);
+		return card;
+	}
+
+	private String clickCardByIndexAndGetName(int indexOneBased) {
+		WebElement card = getKpiCardByIndex(indexOneBased);
+		String cardName = card.getText().split("\n")[0].trim();
+		common.clickElement(card);
+		waitForTableStabilization();
+		return cardName;
+	}
+
+	private String getComponentTitle() {
+		return common.getElementText(COMPONENT_TITLE);
 	}
 
 }

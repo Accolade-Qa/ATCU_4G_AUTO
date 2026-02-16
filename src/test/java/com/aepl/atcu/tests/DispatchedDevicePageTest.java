@@ -7,7 +7,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.aepl.atcu.base.TestBase;
-import com.aepl.atcu.pages.CommonMethods;
 import com.aepl.atcu.pages.DispachedDevicePage;
 import com.aepl.atcu.pages.LoginPage;
 import com.aepl.atcu.util.ConfigProperties;
@@ -17,7 +16,6 @@ public class DispatchedDevicePageTest extends TestBase {
 	private LoginPage loginPage;
 	private DispachedDevicePage dispatchedDevice;
 	private ExcelUtility excelUtility;
-	private CommonMethods commonMethod;
 	private By fileInput = By.id("C:\\Users\\Dhananjay Jagtap\\Downloads\\Sample_Dispatch_Sheet.xlsx");
 
 	@Override

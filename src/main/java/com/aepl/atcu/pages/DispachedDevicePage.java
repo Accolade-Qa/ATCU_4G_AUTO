@@ -17,33 +17,28 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.aepl.atcu.actions.MouseActions;
+import com.aepl.atcu.util.PageActionsUtil;
+import com.aepl.atcu.util.MouseActions;
 
 public class DispachedDevicePage {
 
 	// Global variables
 	private final WebDriver driver;
 	private final WebDriverWait wait;
-	private CommonMethod commonMethod;
+	private PageActionsUtil commonMethod;
 	private MouseActions mouse;
 	private final Logger logger = LogManager.getLogger(DispachedDevicePage.class);
 
 	private final By dropDown = By.xpath("//span[@class='headers_custom color_3D5772']");
 	private final By DispatchedDevice = By.xpath("//a[@routerlink='dispatch-device-page']");
 	private final By AddDispatchedDevice = By.xpath("//button[contains(.,'Add Dispatched Device')]");
-	private final By ChooseFile = By.id("txtFileUpload");
-	private CommonMethod uploadFileAndGetFileName;
 	private final By downloadSampleButton = By.xpath("//button[contains(.,'Download Sample')]");
-	private By fileInput = By.id("C:\\Users\\Dhananjay Jagtap\\Downloads\\Sample_Dispatch_Sheet.xlsx");
-	private By uploadButton = By.id("txtFileUpload");
-	private By uploadedFileName = By.id("Sample_Dispatch_Sheet (3).xlsx");
 
 	public DispachedDevicePage(WebDriver driver) {
 		this.driver = driver;
 		this.mouse = new MouseActions(driver);
 		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-		this.commonMethod = new CommonMethod(driver);
-		this.uploadFileAndGetFileName = new CommonMethod(driver);
+		this.commonMethod = new PageActionsUtil(driver, wait);
 	}
 
 	// Methods Goes here

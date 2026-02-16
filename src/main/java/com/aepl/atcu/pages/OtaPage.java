@@ -16,15 +16,16 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.aepl.atcu.actions.CalendarActions;
-import com.aepl.atcu.actions.MouseActions;
+import com.aepl.atcu.util.PageActionsUtil;
+import com.aepl.atcu.util.CalendarActions;
+import com.aepl.atcu.util.MouseActions;
 
 public class OtaPage extends MouseActions{
 
 	// Global variables
 	private WebDriver driver;
 	private WebDriverWait wait;
-	private CommonMethod commonMethod;
+	private PageActionsUtil commonMethod;
 	private CalendarActions calendarActions;
 	private MouseActions mouseActions;
   
@@ -34,10 +35,10 @@ public class OtaPage extends MouseActions{
 	public OtaPage(WebDriver driver) {
 		super(driver);
 		this.driver = driver;
-		this.commonMethod = new CommonMethods(driver);
-		this.calendarActions = new CalendarActions(driver, wait);
-		this.mouseActions = new MouseActions(driver);
 		this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		this.commonMethod = new PageActionsUtil(driver, this.wait);
+		this.calendarActions = new CalendarActions(driver, this.wait);
+		this.mouseActions = new MouseActions(driver);
 	}
 
 	// Variables
