@@ -2,6 +2,8 @@ package com.aepl.atcu.api.model;
 
 import java.time.LocalDate;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -9,10 +11,13 @@ import com.aepl.atcu.util.RandomGeneratorUtils;
 
 public final class AisTicketRequestBuilder {
 
+	private static final Logger logger = LogManager.getLogger(AisTicketRequestBuilder.class);
+
 	private AisTicketRequestBuilder() {
 	}
 
 	public static JSONArray buildGenerateTicketPayload(AisTicketContext context, RandomGeneratorUtils random) {
+		logger.debug("Building AIS generate ticket payload for VIN: {}", context.getVinNo());
 		JSONObject object = new JSONObject();
 		object.put("VIN_NO", context.getVinNo());
 		object.put("ICCID", context.getIccid());
@@ -55,15 +60,18 @@ public final class AisTicketRequestBuilder {
 
 		JSONArray payload = new JSONArray();
 		payload.put(object);
+		logger.debug("AIS generate ticket payload built successfully.");
 		return payload;
 	}
 
 	public static JSONArray buildTicketStatusPayload(String vinNo, String iccid) {
+		logger.debug("Building AIS ticket status payload for VIN: {}", vinNo);
 		JSONObject object = new JSONObject();
 		object.put("VIN_NO", vinNo);
 		object.put("ICCID", iccid);
 		JSONArray payload = new JSONArray();
 		payload.put(object);
+		logger.debug("AIS ticket status payload built successfully.");
 		return payload;
 	}
 }

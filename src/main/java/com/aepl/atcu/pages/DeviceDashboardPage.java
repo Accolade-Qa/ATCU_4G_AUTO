@@ -51,7 +51,7 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 					.visibilityOfAllElementsLocatedBy(By.xpath("//div[contains(@class,'kpi-section')]/div")));
 
 			int totalCards = initialCards.size();
-			System.out.println("Total cards found: " + totalCards);
+			logger.info("Total cards found: " + totalCards);
 
 			for (int i = 0; i < totalCards; i++) {
 
@@ -534,3 +534,4 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 	}
 
 }
+

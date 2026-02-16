@@ -230,7 +230,7 @@ public class DealearFotaPage extends DealerFotaPageLocators {
 					.map(String::toLowerCase).collect(Collectors.toList());
 
 			// Printing the actual headers
-//			actualHeaderTexts.stream().forEach(s -> System.out.println(s + ", "));
+//			actualHeaderTexts.stream().forEach(s -> logger.info(s + ", "));
 
 			// Making cleanup in actual headers
 			List<String> normalizedExpectedHeaders = expectedTableHeaders.stream().map(String::trim)
@@ -263,9 +263,10 @@ public class DealearFotaPage extends DealerFotaPageLocators {
 		logger.info("Getting an delete action btn element : " + delBtn);
 		delBtn.click();
 		String alertMessage = driver.switchTo().alert().getText();
-		System.out.println("Alert Message is : " + alertMessage);
+		logger.info("Alert Message is : " + alertMessage);
 		driver.switchTo().alert().accept();
 		logger.info("Accepting the alert...");
 		return alertMessage;
 	}
 }
+

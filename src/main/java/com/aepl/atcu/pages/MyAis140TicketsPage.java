@@ -186,7 +186,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 		for (WebElement link : navBarLinks) {
 			if (link.getText().equalsIgnoreCase("Device Utility")) {
 				link.click();
-//				System.out.println("Clicked On Element On Nav: " +link.getAccessibleName());
+//				logger.info("Clicked On Element On Nav: " +link.getAccessibleName());
 				isClicked = true;
 //				break;
 			}
@@ -291,8 +291,8 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
     	String inputValue = ticketNumberElement.getAttribute("value");
     
     	// Print Ticket Information
-    	System.out.println("\u001B[1m\u001B[34mTicket Information:\u001B[0m");
-    	System.out.println("\u001B[1m\u001B[35mTicket Number:\u001B[0m " + inputValue);
+    	logger.info("\u001B[1m\u001B[34mTicket Information:\u001B[0m");
+    	logger.info("\u001B[1m\u001B[35mTicket Number:\u001B[0m " + inputValue);
 
     	// Highlight the element for visual verification
     	js.executeScript("arguments[0].style.border='5px solid yellow';", ticketNumberElement);
@@ -311,7 +311,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			WebElement ticketCreateTimeElement = wait.until(ExpectedConditions.visibilityOfElementLocated(TicketCreate));
 			js.executeScript("arguments[0].click();", ticketCreateTimeElement);
 			String inputValue = ticketCreateTimeElement.getAttribute("value");   
-			System.out.println("\u001B[1m\u001B[35mTicket Created Time & Date :\u001B[0m " + inputValue);    	
+			logger.info("\u001B[1m\u001B[35mTicket Created Time & Date :\u001B[0m " + inputValue);    	
 			js.executeScript("arguments[0].style.border='5px solid yellow';", ticketCreateTimeElement);
 		  	} catch (Exception e) {
 			logger.error("Error while interacting with Ticket Information for Ticket Created Time & Date.", e);
@@ -325,7 +325,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			WebElement ticketAssignTimeElement = wait.until(ExpectedConditions.visibilityOfElementLocated(TicketAssigned));
 			js.executeScript("arguments[0].click();", ticketAssignTimeElement);
 			String inputValue = ticketAssignTimeElement.getAttribute("value");   
-   			System.out.println("\u001B[1m\u001B[35mTicket Assigned Time & Date :\u001B[0m " + inputValue);
+   			logger.info("\u001B[1m\u001B[35mTicket Assigned Time & Date :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", ticketAssignTimeElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Ticket Information for Ticket Assigned Time & Date.", e);
@@ -339,7 +339,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			WebElement ticketCompleteCancelElement = wait.until(ExpectedConditions.visibilityOfElementLocated(TicketCompleted));
 			js.executeScript("arguments[0].click();", ticketCompleteCancelElement);    	
 			String inputValue = ticketCompleteCancelElement.getAttribute("value");   
-			System.out.println("\u001B[1m\u001B[35mTicket Cancelled or Completed Time & Date :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mTicket Cancelled or Completed Time & Date :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", ticketCompleteCancelElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Ticket Information for Ticket Cancelled or Completed Time & Date.", e);
@@ -354,7 +354,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			WebElement ticketCertificateValidityDurationElement = wait.until(ExpectedConditions.visibilityOfElementLocated(TicketCertificate));
 			js.executeScript("arguments[0].click();", ticketCertificateValidityDurationElement);
 			String inputValue = ticketCertificateValidityDurationElement.getAttribute("value");   
-			System.out.println("\u001B[1m\u001B[35mTicket Certificate Validity Duration in Year :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mTicket Certificate Validity Duration in Year :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", ticketCertificateValidityDurationElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Ticket Information for Ticket Certificate Validity Duration in Year.", e);
@@ -368,7 +368,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			WebElement ticketOverAllStatusElement = wait.until(ExpectedConditions.visibilityOfElementLocated(TicketStatus));
 			js.executeScript("arguments[0].click();", ticketOverAllStatusElement);    	
 			String inputValue = ticketOverAllStatusElement.getAttribute("value");      	
-			System.out.println("\u001B[1m\u001B[35mTicket Over All Status :\u001B[0m " + inputValue); 
+			logger.info("\u001B[1m\u001B[35mTicket Over All Status :\u001B[0m " + inputValue); 
 			js.executeScript("arguments[0].style.border='5px solid yellow';", ticketOverAllStatusElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Ticket Information for Ticket Over All Status.", e);
@@ -382,7 +382,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			WebElement ticketOverAllRemarkElement = wait.until(ExpectedConditions.visibilityOfElementLocated(TicketRemark));
 			js.executeScript("arguments[0].click();", ticketOverAllRemarkElement);    	
 			String inputValue = ticketOverAllRemarkElement.getAttribute("value");       	
-			System.out.println("\u001B[1m\u001B[35mTicket Over All Remark :\u001B[0m " + inputValue);    
+			logger.info("\u001B[1m\u001B[35mTicket Over All Remark :\u001B[0m " + inputValue);    
 			js.executeScript("arguments[0].style.border='5px solid yellow';", ticketOverAllRemarkElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Ticket Information for Ticket Over All Remark.", e);
@@ -396,7 +396,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			WebElement ticketGeneratedByElement = wait.until(ExpectedConditions.visibilityOfElementLocated(TicketGenrate));
 			js.executeScript("arguments[0].click();", ticketGeneratedByElement);
 			String inputValue = ticketGeneratedByElement.getAttribute("value");   
-			System.out.println("\u001B[1m\u001B[35mTicket Generated By :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mTicket Generated By :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", ticketGeneratedByElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Ticket Information for Ticket Generated By.", e);
@@ -410,7 +410,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			WebElement ticketDescriptionElement = wait.until(ExpectedConditions.visibilityOfElementLocated(TicketDesc));
 			js.executeScript("arguments[0].click();", ticketDescriptionElement);
 			String inputValue = ticketDescriptionElement.getAttribute("value");   
-			System.out.println("\u001B[1m\u001B[35mTicket Description :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mTicket Description :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", ticketDescriptionElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Ticket Information for Ticket Description.", e);
@@ -431,11 +431,11 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 				// Click the element
 				elementToClick.click();
 				// Log or perform additional actions after clicking
-				System.out.println("\u001B[1m\u001B[34mDevice Information Clicked \u001B[0m ");
+				logger.info("\u001B[1m\u001B[34mDevice Information Clicked \u001B[0m ");
 				// Optionally, add a delay for visual confirmation (avoid in real tests)
 				Thread.sleep(2000);
 				} else {
-					System.err.println("Invalid index: " + indexToClick + ". Total elements found: " + deviceList.size());
+					logger.error("Invalid index: " + indexToClick + ". Total elements found: " + deviceList.size());
 					throw new IllegalArgumentException("Index out of bounds for Device list.");
 				}
 			} catch (Exception e) {
@@ -453,8 +453,8 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = deviceUINElement.getAttribute("value");   
 			
 			// Print Ticket Information
-	    	System.out.println("\u001B[1m\u001B[34mDevice Information:\u001B[0m");
-			System.out.println("\u001B[1m\u001B[35mUIN Number :\u001B[0m " + inputValue);
+	    	logger.info("\u001B[1m\u001B[34mDevice Information:\u001B[0m");
+			logger.info("\u001B[1m\u001B[35mUIN Number :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", deviceUINElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Device Information for UIN Number.", e);
@@ -472,7 +472,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = deviceIMEIElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mIMEI Number :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mIMEI Number :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", deviceIMEIElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Device Information for IMEI Number.", e);
@@ -490,7 +490,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = deviceICCIDElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mICCID Number :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mICCID Number :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", deviceICCIDElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Device Information for ICCID Number.", e);
@@ -508,7 +508,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = deviceModelElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mDevice Model :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mDevice Model :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", deviceModelElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Device Information for Device Model.", e);
@@ -526,7 +526,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = deviceMakeElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mDevice Make :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mDevice Make :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", deviceMakeElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Device Information for Device Make.", e);
@@ -544,7 +544,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = devicePriOprNameElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mPrimary Operator Name :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mPrimary Operator Name :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", devicePriOprNameElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Device Information for Primary Operator Name.", e);
@@ -562,7 +562,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = devicePriOprNumberElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mPrimary Operator Number :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mPrimary Operator Number :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", devicePriOprNumberElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Device Information for Primary Operator Number.", e);
@@ -580,7 +580,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = deviceSecOprNameElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mSecondary Operator Name :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mSecondary Operator Name :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", deviceSecOprNameElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Device Information for Secondary Operator Name.", e);
@@ -598,7 +598,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = deviceSecOprNumberElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mSecondary Operator Number :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mSecondary Operator Number :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", deviceSecOprNumberElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Device Information for Secondary Operator Number.", e);
@@ -622,11 +622,11 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 				// Click the element
 				elementToClick.click();
 				// Log or perform additional actions after clicking
-				System.out.println("\u001B[1m\u001B[34mVehicle Owner Information Clicked \u001B[0m ");
+				logger.info("\u001B[1m\u001B[34mVehicle Owner Information Clicked \u001B[0m ");
 				// Optionally, add a delay for visual confirmation (avoid in real tests)
 				Thread.sleep(2000);
 				} else {
-					System.err.println("Invalid index: " + indexToClick + ". Total elements found: " + vehicleownerList.size());
+					logger.error("Invalid index: " + indexToClick + ". Total elements found: " + vehicleownerList.size());
 					throw new IllegalArgumentException("Index out of bounds for Device list.");
 				}
 			} catch (Exception e) {
@@ -644,8 +644,8 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = VehicleOwnerNameElement.getAttribute("value");   
 			
 			// Print Ticket Information
-	    	System.out.println("\u001B[1m\u001B[34mVehicle Owner Information:\u001B[0m");
-			System.out.println("\u001B[1m\u001B[35mVehicle Owner Name :\u001B[0m " + inputValue);
+	    	logger.info("\u001B[1m\u001B[34mVehicle Owner Information:\u001B[0m");
+			logger.info("\u001B[1m\u001B[35mVehicle Owner Name :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", VehicleOwnerNameElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Vehicle Owner Information for Vehicle Owner Name.", e);
@@ -663,7 +663,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = VehicleOwnerMobileNumberElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mVehicle Owner Mobile Number :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mVehicle Owner Mobile Number :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", VehicleOwnerMobileNumberElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Vehicle Owner Information for Vehicle Owner Mobile Number.", e);
@@ -680,7 +680,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			js.executeScript("arguments[0].click();", VehicleOwnerPOADOCNameElement);
 			String inputValue = VehicleOwnerPOADOCNameElement.getAttribute("value");   
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mVehicle Owner POA DOC Name :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mVehicle Owner POA DOC Name :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", VehicleOwnerPOADOCNameElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Vehicle Owner Information for Vehicle Owner POA DOC Name.", e);
@@ -697,7 +697,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			js.executeScript("arguments[0].click();", VehicleOwnerPOADOCNumberElement);
 			String inputValue = VehicleOwnerPOADOCNumberElement.getAttribute("value");   
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mVehicle Owner POA DOC Number :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mVehicle Owner POA DOC Number :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", VehicleOwnerPOADOCNumberElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Vehicle Owner Information for Vehicle Owner POA DOC Number.", e);
@@ -714,7 +714,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			js.executeScript("arguments[0].click();", VehicleOwnerPOIDOCNameElement);
 			String inputValue = VehicleOwnerPOIDOCNameElement.getAttribute("value");   
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mVehicle Owner POI DOC Name :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mVehicle Owner POI DOC Name :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", VehicleOwnerPOIDOCNameElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Vehicle Owner Information for Vehicle Owner POI DOC Name.", e);
@@ -731,7 +731,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			js.executeScript("arguments[0].click();", VehicleOwnerPOIDOCNumberElement);
 			String inputValue = VehicleOwnerPOIDOCNumberElement.getAttribute("value");   
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mVehicle Owner POI DOC Number :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mVehicle Owner POI DOC Number :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", VehicleOwnerPOIDOCNumberElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Vehicle Owner Information for Vehicle Owner POI DOC Number.", e);
@@ -748,7 +748,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			js.executeScript("arguments[0].click();", VehicleOwnerAddressElement);
 			String inputValue = VehicleOwnerAddressElement.getAttribute("value");   
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mVehicle Owner Address :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mVehicle Owner Address :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", VehicleOwnerAddressElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Vehicle Owner Information for Vehicle Owner Address.", e);
@@ -772,11 +772,11 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 				// Click the element
 				elementToClick.click();
 				// Log or perform additional actions after clicking
-				System.out.println("\u001B[1m\u001B[34mVehicle Information Clicked \u001B[0m ");
+				logger.info("\u001B[1m\u001B[34mVehicle Information Clicked \u001B[0m ");
 				// Optionally, add a delay for visual confirmation (avoid in real tests)
 				Thread.sleep(2000);
 				} else {
-					System.err.println("Invalid index: " + indexToClick + ". Total elements found: " + vehicleList.size());
+					logger.error("Invalid index: " + indexToClick + ". Total elements found: " + vehicleList.size());
 					throw new IllegalArgumentException("Index out of bounds for Device list.");
 				}
 			} catch (Exception e) {
@@ -794,8 +794,8 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = VehicleModelElement.getAttribute("value");   
 			
 			// Print Ticket Information
-	    	System.out.println("\u001B[1m\u001B[34mVehicle Information:\u001B[0m");
-			System.out.println("\u001B[1m\u001B[35mVehicle Model :\u001B[0m " + inputValue);
+	    	logger.info("\u001B[1m\u001B[34mVehicle Information:\u001B[0m");
+			logger.info("\u001B[1m\u001B[35mVehicle Model :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", VehicleModelElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Vehicle Information for Vehicle Model.", e);
@@ -813,7 +813,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = VehicleMakeElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mVehicle Model :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mVehicle Model :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", VehicleMakeElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Vehicle Information for Vehicle Make.", e);
@@ -831,7 +831,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = VehicleManufactureyearElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mVehicle Manfacture Year :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mVehicle Manfacture Year :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", VehicleManufactureyearElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Vehicle Information for Manfacture Year.", e);
@@ -849,7 +849,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = VehicleChassisNumberElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mVehicle Chassis Number :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mVehicle Chassis Number :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", VehicleChassisNumberElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Vehicle Information for Chassis Number.", e);
@@ -867,7 +867,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = VehicleEngineNumberElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mVehicle Engine Number :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mVehicle Engine Number :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", VehicleEngineNumberElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Vehicle Information for Engine Number.", e);
@@ -885,7 +885,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = VehicleRegiNumberElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mVehicle Registration Number :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mVehicle Registration Number :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", VehicleRegiNumberElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Vehicle Information for Registration Number.", e);
@@ -903,7 +903,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = VehicleInvoiceDateElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mVehicle Invoice Date :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mVehicle Invoice Date :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", VehicleInvoiceDateElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Vehicle Information for Invoice Date.", e);
@@ -921,7 +921,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = VehicleInvoiceNumberElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mVehicle Invoice Number :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mVehicle Invoice Number :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", VehicleInvoiceNumberElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Vehicle Information for Invoice Number.", e);
@@ -939,7 +939,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = VehicleRTOStateElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mVehicle RTO State :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mVehicle RTO State :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", VehicleRTOStateElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Vehicle Information for RTO State.", e);
@@ -957,7 +957,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = VehicleRTOCodeElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mVehicle RTO Code :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mVehicle RTO Code :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", VehicleRTOCodeElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Vehicle Information for RTO Code.", e);
@@ -992,7 +992,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = VehicleIGNStatusElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mVehicle IGN Status :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mVehicle IGN Status :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", VehicleIGNStatusElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Vehicle Information for IGN Status.", e);
@@ -1016,11 +1016,11 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 				// Click the element
 				elementToClick.click();
 				// Log or perform additional actions after clicking
-				System.out.println("\u001B[1m\u001B[34mDealear Information Clicked \u001B[0m ");
+				logger.info("\u001B[1m\u001B[34mDealear Information Clicked \u001B[0m ");
 				// Optionally, add a delay for visual confirmation (avoid in real tests)
 				Thread.sleep(2000);
 				} else {
-					System.err.println("Invalid index: " + indexToClick + ". Total elements found: " + dealerList.size());
+					logger.error("Invalid index: " + indexToClick + ". Total elements found: " + dealerList.size());
 					throw new IllegalArgumentException("Index out of bounds for Device list.");
 				}
 			} catch (Exception e) {
@@ -1038,8 +1038,8 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = DealerCodeElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mDealer Information :");
-			System.out.println("\u001B[1m\u001B[35mDealer Code :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mDealer Information :");
+			logger.info("\u001B[1m\u001B[35mDealer Code :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", DealerCodeElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Dealer Information for Dealer Code.", e);
@@ -1057,7 +1057,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = DealerEmailElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mDealer Email :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mDealer Email :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", DealerEmailElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Dealer Information for Dealer Email.", e);
@@ -1075,7 +1075,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = DealerCityElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mDealer City :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mDealer City :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", DealerCityElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Dealer Information for Dealer City.", e);
@@ -1093,7 +1093,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = DealerPhoneNoElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mDealer Phone Number :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mDealer Phone Number :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", DealerPhoneNoElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Dealer Information for Dealer Phone Number.", e);
@@ -1111,7 +1111,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = DealerPOSNameElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mDealer POS Name :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mDealer POS Name :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", DealerPOSNameElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Dealer Information for Dealer POS Name.", e);
@@ -1129,7 +1129,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = DealerPOSCodeElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mDealer POS Code :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mDealer POS Code :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", DealerPOSCodeElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Dealer Information for Dealer POS Code.", e);
@@ -1153,11 +1153,11 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 				// Click the element
 				elementToClick.click();
 				// Log or perform additional actions after clicking
-				System.out.println("\u001B[1m\u001B[34mDevice FOTA Status Clicked \u001B[0m ");
+				logger.info("\u001B[1m\u001B[34mDevice FOTA Status Clicked \u001B[0m ");
 				// Optionally, add a delay for visual confirmation (avoid in real tests)
 				Thread.sleep(2000);
 				} else {
-					System.err.println("Invalid index: " + indexToClick + ". Total elements found: " + fotastatusList.size());
+					logger.error("Invalid index: " + indexToClick + ". Total elements found: " + fotastatusList.size());
 					throw new IllegalArgumentException("Index out of bounds for Device list.");
 				}
 			} catch (Exception e) {
@@ -1175,8 +1175,8 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = FoatBatchIDElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mDevice FOTA Status Information :");
-			System.out.println("\u001B[1m\u001B[35mFOTA Batch ID :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mDevice FOTA Status Information :");
+			logger.info("\u001B[1m\u001B[35mFOTA Batch ID :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", FoatBatchIDElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Device FOTA Status for FOTA Batch ID.", e);
@@ -1194,8 +1194,8 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = FoatBatchIDElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mDevice FOTA Status Information :");
-			System.out.println("\u001B[1m\u001B[35mFOTA Batch ID :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mDevice FOTA Status Information :");
+			logger.info("\u001B[1m\u001B[35mFOTA Batch ID :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", FoatBatchIDElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with Device FOTA Status Information for FOTA Batch ID.", e);
@@ -1213,7 +1213,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = CurrentFWVerElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mCurrent Firmware Version :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mCurrent Firmware Version :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", CurrentFWVerElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with  Device FOTA Status Information for Current Firmware Version.", e);
@@ -1231,7 +1231,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = AssignedFWVerElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mAssigned Firmware Version :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mAssigned Firmware Version :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", AssignedFWVerElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with  Device FOTA Status Information for Assigned Firmware Version.", e);
@@ -1249,7 +1249,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = FOTAStatusElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mFOTA Status :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mFOTA Status :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", FOTAStatusElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with  Device FOTA Status Information for FOTA Status.", e);
@@ -1267,7 +1267,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = FOTAProgressElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mFOTA Progress in % :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mFOTA Progress in % :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", FOTAProgressElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with  Device FOTA Status Information for FOTA Progress in %.", e);
@@ -1285,7 +1285,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = OTAPriIPElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mOTA Primary IP :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mOTA Primary IP :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", OTAPriIPElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with  Device FOTA Status Information for OTA Primary IP.", e);
@@ -1303,7 +1303,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = OTAPriIPStatusElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mOTA Primary IP Status :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mOTA Primary IP Status :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", OTAPriIPStatusElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with  Device FOTA Status Information for OTA Primary IP Status.", e);
@@ -1321,7 +1321,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = OTASecIPElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mOTA Secondary IP :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mOTA Secondary IP :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", OTASecIPElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with  Device FOTA Status Information for OTA Secondary IP.", e);
@@ -1339,7 +1339,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = OTASecIPStatusElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mOTA Secondary IP Status :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mOTA Secondary IP Status :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", OTASecIPStatusElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with  Device FOTA Status Information for OTA Secondary IP Status.", e);
@@ -1357,7 +1357,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = OTAStateEnStatusElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mDevice Enable OTA Status :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mDevice Enable OTA Status :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", OTAStateEnStatusElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with  Device FOTA Status Information for Device Enable OTA Status.", e);
@@ -1378,7 +1378,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			js.executeScript("arguments[0].click();", stage2SkipElement);
 			String inputValue = stage2SkipElement.getAttribute("value");			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mStage 2 Restriction Remove :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mStage 2 Restriction Remove :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", OTAStateEnStatusElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with  Device FOTA Status Information for Stage 2 Restriction Remove.", e);
@@ -1397,7 +1397,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = FOTASkipRemarkElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mDevice FOTA Skip Remark :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mDevice FOTA Skip Remark :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", FOTASkipRemarkElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with  Device FOTA Status Information for Device FOTA Skip Remark.", e);
@@ -1415,7 +1415,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			String inputValue = FOTASkipByElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mDevice FOTA Skip By User Name :\u001B[0m " + inputValue);
+			logger.info("\u001B[1m\u001B[35mDevice FOTA Skip By User Name :\u001B[0m " + inputValue);
 			js.executeScript("arguments[0].style.border='5px solid yellow';", FOTASkipByElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with  Device FOTA Status Information for Device FOTA Skip By User Name.", e);
@@ -1433,7 +1433,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 //			String inputValue = Removestage2resElement.getAttribute("value");   
 			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mRemove Stage 2 Restriction Button Clicked :\u001B[0m " );
+			logger.info("\u001B[1m\u001B[35mRemove Stage 2 Restriction Button Clicked :\u001B[0m " );
 			js.executeScript("arguments[0].style.border='5px solid yellow';", Removestage2resElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with  Device FOTA Status Information for Remove Stage 2 Restriction Button option.", e);
@@ -1450,7 +1450,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			WebElement IgnOnOffElement = wait.until(ExpectedConditions.visibilityOfElementLocated(VehicleIgnitionOn));
 			js.executeScript("arguments[0].click();", IgnOnOffElement);
 			wait.until(ExpectedConditions.elementToBeClickable(IgnOnOffElement));
-			System.out.println("\u001B[1m\u001B[35mStage 1 of 1st substage dropdown is Clicked :\u001B[0m " );
+			logger.info("\u001B[1m\u001B[35mStage 1 of 1st substage dropdown is Clicked :\u001B[0m " );
 			
 			Thread.sleep(2000);
 			// Locate the dropdown element
@@ -1472,7 +1472,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 	        
 			String inputValue = IgnOnOffElement.getAttribute("value");			
 			// Print Ticket Information
-			System.out.println("\u001B[1m\u001B[35mStage 1 of 1st substage is Completed :\u001B[0m ");
+			logger.info("\u001B[1m\u001B[35mStage 1 of 1st substage is Completed :\u001B[0m ");
 			js.executeScript("arguments[0].style.border='5px solid yellow';", IgnOnOffElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with  Stage 1 of 1st substage dropdown is Clicked.", e);
@@ -1489,7 +1489,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			WebElement GSMNWElement = wait.until(ExpectedConditions.visibilityOfElementLocated(gsmnw));
 			js.executeScript("arguments[0].click();", GSMNWElement);
 			wait.until(ExpectedConditions.elementToBeClickable(GSMNWElement));
-			System.out.println("\u001B[1m\u001B[35mStage 1 of 2nd substage dropdown is Clicked :\u001B[0m " );
+			logger.info("\u001B[1m\u001B[35mStage 1 of 2nd substage dropdown is Clicked :\u001B[0m " );
 			
 			Thread.sleep(2000);
 			// Locate the dropdown element
@@ -1505,7 +1505,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 	        
 			String inputValue = GSMNWElement.getDomAttribute("value");			
 			// Print Ticket Information
-//			System.out.println("\u001B[1m\u001B[35mStage 2 Restriction Remove :\u001B[0m ");
+//			logger.info("\u001B[1m\u001B[35mStage 2 Restriction Remove :\u001B[0m ");
 			js.executeScript("arguments[0].style.border='5px solid yellow';", GSMNWElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with  Stage 1 of 2nd substage dropdown is Clicked.", e);
@@ -1522,7 +1522,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 			WebElement GSMNWElement = wait.until(ExpectedConditions.visibilityOfElementLocated(gpsfix));
 			js.executeScript("arguments[0].click();", GSMNWElement);
 			wait.until(ExpectedConditions.elementToBeClickable(GSMNWElement));
-			System.out.println("\u001B[1m\u001B[35mStage 1 of 2nd substage dropdown is Clicked :\u001B[0m " );
+			logger.info("\u001B[1m\u001B[35mStage 1 of 2nd substage dropdown is Clicked :\u001B[0m " );
 			
 			Thread.sleep(2000);
 			// Locate the dropdown element
@@ -1538,7 +1538,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 	        
 			String inputValue = GSMNWElement.getDomAttribute("value");			
 			// Print Ticket Information
-//			System.out.println("\u001B[1m\u001B[35mStage 2 Restriction Remove :\u001B[0m ");
+//			logger.info("\u001B[1m\u001B[35mStage 2 Restriction Remove :\u001B[0m ");
 			js.executeScript("arguments[0].style.border='5px solid yellow';", GSMNWElement);
 			} catch (Exception e) {
 			logger.error("Error while interacting with  Stage 1 of 3rd substage dropdown is Clicked.", e);
@@ -1548,3 +1548,4 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 	}
 	
 }
+

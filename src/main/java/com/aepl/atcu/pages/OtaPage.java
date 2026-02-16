@@ -128,7 +128,7 @@ public class OtaPage extends OtaPageLocators {
 			commonMethod.checkPagination(nextButton, prevButton, actButton);
 			logger.log(Level.INFO, "log after checking the pagination");
 		} catch (Exception e) {
-			e.getMessage();
+			logger.error("Error while validating OTA pagination.", e);
 		}
 	}
 
@@ -148,12 +148,12 @@ public class OtaPage extends OtaPageLocators {
 				if (button.getText().equalsIgnoreCase("OTA Batch Report")) {
 					button.click();
 					logger.info("Clicked on the OTA Batch Report button");
-					System.out.println("Navigated to URL: " + driver.getCurrentUrl());
+					logger.info("Navigated to URL: " + driver.getCurrentUrl());
 					return;
 				}
 			}
 		} catch (Exception e) {
-			e.getMessage();
+			logger.error("Error while clicking OTA Batch Report button.", e);
 		}
 	}
 
@@ -196,7 +196,7 @@ public class OtaPage extends OtaPageLocators {
 			}
 
 		} catch (Exception e) {
-			e.getMessage();
+			logger.error("Error while executing OTA batch date-wise workflow.", e);
 		}
 	}
 
@@ -229,7 +229,7 @@ public class OtaPage extends OtaPageLocators {
 			for (WebElement button : reportButtons) {
 				if (button.isEnabled() && button.isDisplayed()) {
 					Thread.sleep(2000);
-					System.out.println("Button text: " + button.getText());
+					logger.info("Button text: " + button.getText());
 					if (button.getText().contains("Batch Summary Report")) {
 						commonMethod.reportDownloadButtons(button);
 						return true;
@@ -264,12 +264,12 @@ public class OtaPage extends OtaPageLocators {
 				if (button.getText().equalsIgnoreCase("OTA Master")) {
 					button.click();
 					logger.info("Clicked on the OTA Master button");
-					System.out.println("Navigated to URL: " + driver.getCurrentUrl());
+					logger.info("Navigated to URL: " + driver.getCurrentUrl());
 					return driver.getCurrentUrl();
 				}
 			}
 		} catch (Exception e) {
-			e.getMessage();
+			logger.error("Error while clicking OTA Master button.", e);
 		}
 		return "link not found";
 	}
@@ -377,28 +377,28 @@ public class OtaPage extends OtaPageLocators {
 
 			String updateMessage = fillAndSubmitOtaForm("update");
 			boolean isOtaUpdate = updateMessage.contains("Successfully updated.");
-			System.out.println("OTA UPDATED ? " + isOtaUpdate);
+			logger.info("OTA UPDATED ? " + isOtaUpdate);
 
 			if (isOtaUpdate) {
-				System.out.println("OTA command updated successfully.");
+				logger.info("OTA command updated successfully.");
 			} else {
-				System.out.println("OTA command not updated.");
+				logger.info("OTA command not updated.");
 			}
 
 			// Ensure delete button is located again
 			WebElement deleteButton = wait.until(ExpectedConditions.elementToBeClickable(deleteButtonOfOta));
 
-			System.out.println("Attempting to move to delete button...");
+			logger.info("Attempting to move to delete button...");
 			mouseActions.moveToElement(deleteButton);
 
-			System.out.println("Attempting to click delete button...");
+			logger.info("Attempting to click delete button...");
 			mouseActions.clickElement(deleteButton);
 
 			Alert alert = driver.switchTo().alert();
 			alert.accept();
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Unhandled exception occurred.", e);
 		}
 	}
 
@@ -425,3 +425,4 @@ public class OtaPage extends OtaPageLocators {
 	}
 
 }
+

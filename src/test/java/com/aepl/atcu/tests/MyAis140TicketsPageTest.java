@@ -73,7 +73,11 @@ public class MyAis140TicketsPageTest extends TestBase {
 	@Test(priority = 5)
 	public void testClickViewButton() {
 		executor.executeTest("Open first ticket details", true, () -> {
-			page.ClickViewButton();
+			try {
+				page.ClickViewButton();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			return true;
 		});
 	}

@@ -77,6 +77,7 @@ public class PageAssertionsUtil extends CommonPageLocators {
 
 			return "All components are displayed and validated successfully.";
 		} catch (Exception e) {
+			logger.error("Error validating page components.", e);
 			return "Error validating components: " + e.getMessage();
 		}
 	}
@@ -99,6 +100,7 @@ public class PageAssertionsUtil extends CommonPageLocators {
 			((JavascriptExecutor) driver).executeScript("window.scrollTo(0,0)");
 			return "All buttons are displayed and enabled successfully.";
 		} catch (Exception e) {
+			logger.error("Error validating page buttons.", e);
 			return "Error validating buttons: " + e.getMessage();
 		}
 	}

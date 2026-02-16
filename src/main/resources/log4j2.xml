@@ -1,28 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="WARN">
-    <!-- Define properties for reusability -->
-    <Properties>
-        <Property name="logDir">logs</Property>
-        <Property name="logFileName">test-automation.log</Property>
-        <Property name="logPattern">%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level: %msg%n%throwable</Property>
-    </Properties>
+<Configuration status="WARN" monitorInterval="60">
+	<Properties>
+		<Property name="logDir">logs</Property>
+		<Property name="logFileName">test-automation.log</Property>
+		<Property name="archivePattern">test-automation-%d{yyyy-MM-dd}-%i.log.gz</Property>
+		<Property name="logPattern">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %c{1.}:%L - %msg%n%throwable</Property>
+	</Properties>
 
-    <Appenders>
-        <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="${logPattern}" />
-        </Console>
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="${logPattern}" />
+		</Console>
 
-        <!-- File Appender for logging to a file -->
-        <File name="File" fileName="${logDir}/${logFileName}">
-            <PatternLayout pattern="${logPattern}" />
-        </File>
-    </Appenders>
+		<RollingFile name="RollingFile" fileName="${logDir}/${logFileName}"
+			filePattern="${logDir}/archive/${archivePattern}" immediateFlush="false">
+			<PatternLayout pattern="${logPattern}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="20 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="20" />
+		</RollingFile>
 
-    <Loggers>
-        <!-- Root logger with INFO level logging -->
-        <Root level="info">
-            <AppenderRef ref="Console" />
-            <AppenderRef ref="File" />
-        </Root>
-    </Loggers>
+		<Async name="AsyncFile">
+			<AppenderRef ref="RollingFile" />
+		</Async>
+	</Appenders>
+
+	<Loggers>
+		<Logger name="org.openqa.selenium" level="warn" additivity="false">
+			<AppenderRef ref="AsyncFile" />
+		</Logger>
+
+		<Logger name="io.github.bonigarcia.wdm" level="warn" additivity="false">
+			<AppenderRef ref="AsyncFile" />
+		</Logger>
+
+		<Root level="info">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="AsyncFile" />
+		</Root>
+	</Loggers>
 </Configuration>

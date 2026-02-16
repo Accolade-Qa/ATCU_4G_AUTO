@@ -228,7 +228,7 @@ public class DeviceModelPage extends DeviceModelPageLocators {
 			commonMethod.checkPagination(nextButton, prevButton, actButton);
 
 		} catch (Exception e) {
-			e.getMessage();
+			logger.error("Error while validating Device Model pagination.", e);
 		}
 	}
 }
