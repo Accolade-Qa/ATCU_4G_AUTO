@@ -22,7 +22,7 @@ public class DeviceModelPage extends DeviceModelPageLocators {
 	// Global variables
 	private final WebDriver driver;
 	private final WebDriverWait wait;
-	private PageActionsUtil commonMethod;
+	private final PageActionsUtil commonMethod;
 	private final Logger logger = LogManager.getLogger(DeviceModelPage.class);
 
 	// Constructor
@@ -52,8 +52,8 @@ public class DeviceModelPage extends DeviceModelPageLocators {
 	public String clickDeviceModel() {
 		// Click on the element 'Device Model' and return the current URL
 		try {
-			WebElement DevicemodelLink = wait.until(ExpectedConditions.visibilityOfElementLocated(DeviceModel));
-			DevicemodelLink.click();
+			WebElement DevicemodelLink = commonMethod.waitForVisibility(DeviceModel);
+			commonMethod.clickElement(DevicemodelLink);
 			return driver.getCurrentUrl();
 		} catch (Exception e) {
 			logger.error("Error while clicking on Device Model option.", e);
@@ -64,8 +64,8 @@ public class DeviceModelPage extends DeviceModelPageLocators {
 	public String clickAddDeviceModel() {
 		// Click on the element 'Add Device Model' and return the current URL
 		try {
-			WebElement DevicemodelLink = wait.until(ExpectedConditions.visibilityOfElementLocated(AddDeviceModel));
-			DevicemodelLink.click();
+			WebElement DevicemodelLink = commonMethod.waitForVisibility(AddDeviceModel);
+			commonMethod.clickElement(DevicemodelLink);
 			return driver.getCurrentUrl();
 		} catch (Exception e) {
 			logger.error("Error while clicking on Add Device Model button.", e);

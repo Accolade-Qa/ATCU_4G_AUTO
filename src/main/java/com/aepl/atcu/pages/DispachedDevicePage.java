@@ -25,8 +25,8 @@ public class DispachedDevicePage extends DispatchedDevicePageLocators {
 	// Global variables
 	private final WebDriver driver;
 	private final WebDriverWait wait;
-	private PageActionsUtil commonMethod;
-	private MouseActions mouse;
+	private final PageActionsUtil commonMethod;
+	private final MouseActions mouse;
 	private final Logger logger = LogManager.getLogger(DispachedDevicePage.class);
 
 	public DispachedDevicePage(WebDriver driver) {
@@ -56,9 +56,8 @@ public class DispachedDevicePage extends DispatchedDevicePageLocators {
 	public String clickDispatchedDevice() {
 		// Click on the element 'Device Model' and return the current URL
 		try {
-			WebElement DispatchedDeviceLink = wait
-					.until(ExpectedConditions.visibilityOfElementLocated(DispatchedDevice));
-			DispatchedDeviceLink.click();
+			WebElement DispatchedDeviceLink = commonMethod.waitForVisibility(DispatchedDevice);
+			commonMethod.clickElement(DispatchedDeviceLink);
 			return driver.getCurrentUrl();
 		} catch (Exception e) {
 			logger.error("Error while clicking on Dispatched Device option.", e);
@@ -69,9 +68,8 @@ public class DispachedDevicePage extends DispatchedDevicePageLocators {
 	public String clickAddDispatchedDevice() {
 		// Click on the element 'Add Device Model' and return the current URL
 		try {
-			WebElement AddDispatchedDeviceBtn = wait
-					.until(ExpectedConditions.visibilityOfElementLocated(AddDispatchedDevice));
-			AddDispatchedDeviceBtn.click();
+			WebElement AddDispatchedDeviceBtn = commonMethod.waitForVisibility(AddDispatchedDevice);
+			commonMethod.clickElement(AddDispatchedDeviceBtn);
 			return driver.getCurrentUrl();
 		} catch (Exception e) {
 			logger.error("Error while clicking on Add Dispatched Device button.", e);
@@ -116,7 +114,8 @@ public class DispachedDevicePage extends DispatchedDevicePageLocators {
 			robot.keyRelease(KeyEvent.VK_ENTER);
 
 		} catch (Exception e) {
-
+			logger.error("Error while uploading dispatch file.", e);
+			throw new RuntimeException("Failed to upload dispatch file", e);
 		}
 	}
 }

@@ -21,10 +21,10 @@ import com.aepl.atcu.util.PageActionsUtil;
 import com.aepl.atcu.util.TableUtils;
 
 public class DeviceDashboardPage extends DeviceDashboardPageLocators {
-	private WebDriver driver;
-	private WebDriverWait wait;
-	private PageActionsUtil common;
-	private TableUtils table;
+	private final WebDriver driver;
+	private final WebDriverWait wait;
+	private final PageActionsUtil common;
+	private final TableUtils table;
 	private static final Logger logger = LogManager.getLogger(DeviceDashboardPage.class);
 
 	public DeviceDashboardPage(WebDriver driver, WebDriverWait wait, MouseActions action) {

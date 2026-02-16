@@ -27,6 +27,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.aepl.atcu.locators.MyAis140TicketsPageLocators;
+import com.aepl.atcu.util.PageActionsUtil;
+import com.aepl.atcu.util.RandomGeneratorUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -37,11 +39,15 @@ import io.restassured.specification.RequestSpecification;
 public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 	private final WebDriver driver;
 	private final WebDriverWait wait;
+	private final PageActionsUtil actions;
+	private final RandomGeneratorUtils randomUtils;
 	private static final Logger logger = LogManager.getLogger(MyAis140TicketsPage.class);
 
 	public MyAis140TicketsPage(WebDriver driver) {
 		this.driver = driver;
-		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		this.actions = new PageActionsUtil(driver, this.wait);
+		this.randomUtils = new RandomGeneratorUtils();
 	}
 
 	public String VIN_NO = generateRandomString(17);
@@ -67,17 +73,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 // Locators Goes here
 
 	public String generateRandomString(int length) {
-		String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-		Random random = new Random();
-		StringBuilder stringBuilder = new StringBuilder(length);
-
-		for (int i = 0; i < length; i++) {
-			int index = random.nextInt(characters.length());
-			char randomChar = characters.charAt(index);
-			stringBuilder.append(randomChar);
-		}
-
-		return stringBuilder.toString();
+		return randomUtils.generateRandomString(length);
 
 	}
 
@@ -108,15 +104,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 
 	// Utility method to generate a random number within a specified range
 	public String generateRandomNumber(int length) {
-		StringBuilder sb = new StringBuilder(length);
-		Random random = new Random();
-		// Ensure the first digit is not zero to make it a valid mobile number
-		sb.append(random.nextInt(9) + 1);
-		for (int i = 1; i < length; i++) {
-			sb.append(random.nextInt(10));
-		}
-
-		return sb.toString();
+		return randomUtils.generateRandomNumber(length);
 	}
 
 	public int generateRandomSingleDigit() {
@@ -318,9 +306,9 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 	public String clickDropDownOption() {
 		// Click on the element 'My AIS140 Tickets Page' and return the current URL
 		try {
-			WebElement MyAis140Ticket = wait.until(ExpectedConditions.visibilityOfElementLocated(MyAis140));
+			WebElement MyAis140Ticket = actions.waitForVisibility(MyAis140);
 			Thread.sleep(2000);
-			MyAis140Ticket.click();
+			actions.clickElement(MyAis140Ticket);
 			return driver.getCurrentUrl();
 		} catch (Exception e) {
 			logger.error("Error while clicking on My AIS140 Ticket option.", e);
@@ -331,11 +319,9 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 	public WebElement ClickSearchBox() {
 		try {
 			// Wait for the navigation bar links to be visible
-			JavascriptExecutor js = (JavascriptExecutor) driver;
-			WebElement search = wait.until(ExpectedConditions.visibilityOfElementLocated(SearchBox));
+			WebElement search = actions.waitForVisibility(SearchBox);
 			Thread.sleep(2000);
-//				search.click();
-			js.executeScript("arguments[0].style.border='5px solid Yellow'");
+			actions.highlightElement(search, "solid yellow");
 			return search;
 		} catch (Exception e) {
 			logger.error("Error while clicking on My AIS140 Ticket Search Box option.", e);

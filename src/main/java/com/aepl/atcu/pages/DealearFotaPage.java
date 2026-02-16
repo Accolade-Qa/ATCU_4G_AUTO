@@ -57,8 +57,8 @@ public class DealearFotaPage extends DealerFotaPageLocators {
 
 	public String clickDropDownOption() {
 		try {
-			WebElement dealerFotaLink = wait.until(ExpectedConditions.visibilityOfElementLocated(dealerFota));
-			dealerFotaLink.click();
+			WebElement dealerFotaLink = commonMethod.waitForVisibility(dealerFota);
+			commonMethod.clickElement(dealerFotaLink);
 			return driver.getCurrentUrl();
 		} catch (Exception e) {
 			logger.error("Error while clicking on Change Mobile option.", e);
@@ -138,11 +138,11 @@ public class DealearFotaPage extends DealerFotaPageLocators {
 
 	public void clickAddApprovedFileButton() {
 		logger.info("Clicking on the 'Add Approved File' Button");
-		WebElement fileBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(addApprovedFileBtn));
+		WebElement fileBtn = commonMethod.waitForVisibility(addApprovedFileBtn);
 
 		if (fileBtn.isEnabled() && fileBtn.isDisplayed()) {
 			logger.info("Add Approved File buttton is visible and clickable");
-			fileBtn.click();
+			commonMethod.clickElement(fileBtn);
 			logger.info("Add Approved File button");
 		}
 	}

@@ -19,15 +19,15 @@ import com.aepl.atcu.util.EmailReader;
 import com.aepl.atcu.util.PageActionsUtil;
 
 public class LoginPage extends LoginPageLocators {
-	private WebDriver driver;
-	private WebDriverWait wait;
-	private PageActionsUtil comm;
+	private final WebDriver driver;
+	private final WebDriverWait wait;
+	private final PageActionsUtil comm;
 	private static final Logger logger = LogManager.getLogger(LoginPage.class);
 
 	public LoginPage(WebDriver driver, WebDriverWait wait) {
 		this.driver = driver;
-		this.wait = wait;
-		this.comm = new PageActionsUtil(driver, wait);
+		this.wait = (wait != null) ? wait : new WebDriverWait(driver, java.time.Duration.ofSeconds(10));
+		this.comm = new PageActionsUtil(driver, this.wait);
 	}
 
 	public LoginPage enterUsername(String username) {

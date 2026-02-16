@@ -50,8 +50,8 @@ public class ChangeMobilePage extends ChangeMobilePageLocators {
 	public String clickDropDownOption() {
 		// Click on the element 'changeMobile' and return the current URL
 		try {
-			WebElement changeMobileLink = wait.until(ExpectedConditions.visibilityOfElementLocated(changeMobile));
-			changeMobileLink.click();
+			WebElement changeMobileLink = pageActionsUtil.waitForVisibility(changeMobile);
+			pageActionsUtil.clickElement(changeMobileLink);
 			return driver.getCurrentUrl();
 		} catch (Exception e) {
 			logger.error("Error while clicking on Change Mobile option.", e);

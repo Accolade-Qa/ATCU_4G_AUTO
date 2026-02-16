@@ -23,11 +23,11 @@ import com.aepl.atcu.util.PageActionsUtil;
 public class OtaPage extends OtaPageLocators {
 
 	// Global variables
-	private WebDriver driver;
-	private WebDriverWait wait;
-	private PageActionsUtil commonMethod;
-	private CalendarActions calendarActions;
-	private MouseActions mouseActions;
+	private final WebDriver driver;
+	private final WebDriverWait wait;
+	private final PageActionsUtil commonMethod;
+	private final CalendarActions calendarActions;
+	private final MouseActions mouseActions;
   
 	private static final Logger logger = LogManager.getLogger(OtaPage.class);
 
@@ -58,8 +58,8 @@ public class OtaPage extends OtaPageLocators {
 
 	public String clickDropdown() {
 		try {
-			WebElement changeMobileLink = wait.until(ExpectedConditions.visibilityOfElementLocated(otaLink));
-			changeMobileLink.click();
+			WebElement changeMobileLink = commonMethod.waitForVisibility(otaLink);
+			commonMethod.clickElement(changeMobileLink);
 			return driver.getCurrentUrl();
 		} catch (Exception e) {
 			logger.error("Error while clicking on Change Mobile option.", e);
