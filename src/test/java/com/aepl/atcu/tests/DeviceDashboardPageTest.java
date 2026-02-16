@@ -170,24 +170,65 @@ public class DeviceDashboardPageTest extends TestBase {
 	}
 
 	// Verify Search Input Visible
+	@Test(priority = 22)
+	public void testSearchInputVisible() {
+		executor.executeTest("Validate the search input is visible on table", true, page::validateSearchInputVisible);
+	}
 
 	// Verify Search Input Enabled
+	@Test(priority = 23)
+	public void testSearchInputEnabled() {
+		executor.executeTest("Validate the search input is enabled on table", true, page::validateSearchInputEnabled);
+	}
 
 	// Verify Search Button Visible
+	@Test(priority = 24)
+	public void testSearchButtonVisible() {
+		executor.executeTest("Validate the search button is visible on table", true, page::validateSearchButtonVisible);
+	}
 
 	// Verify Search Button Enabled
+	@Test(priority = 25)
+	public void testSearchButtonEnabled() {
+		executor.executeTest("Validate the search button is enabled on table", true, page::validateSearchButtonEnabled);
+	}
 
 	// Verify Search With Valid Data
+	@Test(priority = 26)
+	public void testSearchWithValidData() {
+		executor.executeTest("Validate the search with valid data on table", true, page::validateSearchWithValidData);
+	}
 
 	// Verify Search With Invalid Data
+	@Test(priority = 27)
+	public void testSearchWithInvalidData() {
+		executor.executeTest("Validate the search with invalid data on table", true,
+				page::validateSearchWithInvalidData);
+	}
 
 	// Verify Search Reset Behavior
+	@Test(priority = 28)
+	public void testSearchResetBehavior() {
+		executor.executeTest("Validate the search reset behavior on table", true, page::validateSearchResetBehavior);
+	}
 
 	// Verify Pagination Visible
+	@Test(priority = 29)
+	public void testPaginationVisible() {
+		executor.executeTest("Validate pagination is visible on table", true, page::validatePaginationVisible);
+	}
 
 	// Verify Next Page Working
+	@Test(priority = 30)
+	public void testNextPageWorking() {
+		executor.executeTest("Validate next page working on table", true, page::validateNextPageWorking);
+	}
 
 	// Verify Previous Page Working
+	@Test(priority = 31)
+	public void testPreviousPageWorking() {
+		executor.executeTest("Validate previous page working on table", true, page::validatePreviousPageWorking);
+	}
 
 	// Verify Page Number Click
 

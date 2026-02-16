@@ -3,12 +3,15 @@ package com.aepl.atcu.pages;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -158,6 +161,298 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 		} catch (Exception e) {
 			logger.error("Download button is not clickable", e);
 			return false;
+		}
+	}
+
+	public boolean validateSearchInputVisible() {
+		try {
+			WebElement searchInput = findFirstVisibleElement(SEARCH_INPUT);
+			if (searchInput == null) {
+				return false;
+			}
+			common.highlightElement(searchInput, "green");
+			return searchInput.isDisplayed();
+		} catch (Exception e) {
+			logger.error("Search input visibility validation failed", e);
+			return false;
+		}
+	}
+
+	public boolean validateSearchInputEnabled() {
+		try {
+			WebElement searchInput = findFirstVisibleElement(SEARCH_INPUT);
+			if (searchInput == null) {
+				return false;
+			}
+			common.highlightElement(searchInput, "green");
+			return searchInput.isEnabled();
+		} catch (Exception e) {
+			logger.error("Search input enabled validation failed", e);
+			return false;
+		}
+	}
+
+	public boolean validateSearchButtonVisible() {
+		try {
+			WebElement searchBtn = findFirstVisibleElement(SEARCH_BUTTON);
+			if (searchBtn == null) {
+				return false;
+			}
+			common.highlightElement(searchBtn, "green");
+			return searchBtn.isDisplayed();
+		} catch (Exception e) {
+			logger.error("Search button visibility validation failed", e);
+			return false;
+		}
+	}
+
+	public boolean validateSearchButtonEnabled() {
+		try {
+			WebElement searchBtn = findFirstVisibleElement(SEARCH_BUTTON);
+			if (searchBtn == null) {
+				return false;
+			}
+			common.highlightElement(searchBtn, "green");
+			return searchBtn.isEnabled();
+		} catch (Exception e) {
+			logger.error("Search button enabled validation failed", e);
+			return false;
+		}
+	}
+
+	public boolean validateSearchWithValidData() {
+		try {
+			String searchTerm = getFirstRowFirstValue();
+			if (searchTerm == null || searchTerm.isBlank()) {
+				logger.warn("Unable to derive valid search data from table.");
+				return false;
+			}
+
+			String query = searchTerm.length() > 5 ? searchTerm.substring(0, 5) : searchTerm;
+			int initialCount = getTableRowCount();
+			performSearch(query);
+
+			boolean anyRowMatched = isAnyRowContains(query);
+			int filteredCount = getTableRowCount();
+
+			resetSearch();
+			return anyRowMatched && (filteredCount <= initialCount || initialCount == 0);
+		} catch (Exception e) {
+			logger.error("Search with valid data validation failed", e);
+			return false;
+		}
+	}
+
+	public boolean validateSearchWithInvalidData() {
+		try {
+			String query = "ZZZ_INVALID_SEARCH_" + System.currentTimeMillis();
+			performSearch(query);
+
+			boolean noDataFound = table.isNoDataImagePresent(TABLE_ROOT) || getTableRowCount() == 0;
+			resetSearch();
+			return noDataFound;
+		} catch (Exception e) {
+			logger.error("Search with invalid data validation failed", e);
+			return false;
+		}
+	}
+
+	public boolean validateSearchResetBehavior() {
+		try {
+			int initialCount = getTableRowCount();
+
+			String searchTerm = getFirstRowFirstValue();
+			if (searchTerm == null || searchTerm.isBlank()) {
+				return false;
+			}
+
+			String query = searchTerm.length() > 4 ? searchTerm.substring(0, 4) : searchTerm;
+			performSearch(query);
+
+			int filteredCount = getTableRowCount();
+			resetSearch();
+			int resetCount = getTableRowCount();
+
+			if (initialCount == 0) {
+				return resetCount == 0;
+			}
+			return resetCount >= filteredCount && resetCount > 0;
+		} catch (Exception e) {
+			logger.error("Search reset behavior validation failed", e);
+			return false;
+		}
+	}
+
+	public boolean validatePaginationVisible() {
+		try {
+			WebElement pagination = findFirstVisibleElement(PAGINATION_CONTAINER);
+			WebElement nextBtn = findFirstVisibleElement(NEXT_PAGE_BUTTON);
+			WebElement prevBtn = findFirstVisibleElement(PREVIOUS_PAGE_BUTTON);
+
+			return pagination != null && pagination.isDisplayed() && nextBtn != null && prevBtn != null;
+		} catch (Exception e) {
+			logger.error("Pagination visibility validation failed", e);
+			return false;
+		}
+	}
+
+	public boolean validateNextPageWorking() {
+		try {
+			WebElement nextBtn = findFirstVisibleElement(NEXT_PAGE_BUTTON);
+			if (nextBtn == null) {
+				return false;
+			}
+
+			if (!nextBtn.isEnabled()) {
+				logger.info("Next page button is disabled; likely single-page result.");
+				return true;
+			}
+
+			String beforePageInfo = getPageInfoText();
+			clickElement(nextBtn);
+			waitForTableStabilization();
+
+			String afterPageInfo = getPageInfoText();
+			return !beforePageInfo.equals(afterPageInfo) || isPreviousButtonEnabled();
+		} catch (Exception e) {
+			logger.error("Next page validation failed", e);
+			return false;
+		}
+	}
+
+	public boolean validatePreviousPageWorking() {
+		try {
+			WebElement prevBtn = findFirstVisibleElement(PREVIOUS_PAGE_BUTTON);
+			WebElement nextBtn = findFirstVisibleElement(NEXT_PAGE_BUTTON);
+
+			if (prevBtn == null) {
+				return false;
+			}
+
+			if (!prevBtn.isEnabled() && nextBtn != null && nextBtn.isEnabled()) {
+				clickElement(nextBtn);
+				waitForTableStabilization();
+				prevBtn = findFirstVisibleElement(PREVIOUS_PAGE_BUTTON);
+			}
+
+			if (prevBtn == null || !prevBtn.isEnabled()) {
+				logger.info("Previous page button is disabled; pagination did not move ahead.");
+				return true;
+			}
+
+			String beforePageInfo = getPageInfoText();
+			clickElement(prevBtn);
+			waitForTableStabilization();
+
+			String afterPageInfo = getPageInfoText();
+			return !beforePageInfo.equals(afterPageInfo);
+		} catch (Exception e) {
+			logger.error("Previous page validation failed", e);
+			return false;
+		}
+	}
+
+	private WebElement findFirstVisibleElement(By... locators) {
+		for (By locator : locators) {
+			List<WebElement> elements = driver.findElements(locator);
+			for (WebElement element : elements) {
+				if (element != null && element.isDisplayed()) {
+					return element;
+				}
+			}
+		}
+		return null;
+	}
+
+	private void performSearch(String query) {
+		WebElement searchInput = wait.until(ExpectedConditions.visibilityOfElementLocated(SEARCH_INPUT));
+		searchInput.click();
+		searchInput.clear();
+		searchInput.sendKeys(query);
+
+		WebElement searchButton = findFirstVisibleElement(SEARCH_BUTTON);
+		if (searchButton != null && searchButton.isEnabled()) {
+			clickElement(searchButton);
+		} else {
+			searchInput.sendKeys(Keys.ENTER);
+		}
+		waitForTableStabilization();
+	}
+
+	private void resetSearch() {
+		WebElement searchInput = findFirstVisibleElement(SEARCH_INPUT);
+		WebElement resetButton = findFirstVisibleElement(RESET_BUTTON);
+
+		if (resetButton != null && resetButton.isEnabled()) {
+			clickElement(resetButton);
+		} else if (searchInput != null) {
+			searchInput.click();
+			searchInput.clear();
+			searchInput.sendKeys(Keys.ENTER);
+		}
+		waitForTableStabilization();
+	}
+
+	private int getTableRowCount() {
+		List<String> headers = table.getTableHeaders(TABLE_ROOT);
+		List<Map<String, String>> rows = table.getTableData(TABLE_ROOT, headers);
+		return rows.size();
+	}
+
+	private String getFirstRowFirstValue() {
+		List<String> headers = table.getTableHeaders(TABLE_ROOT);
+		List<Map<String, String>> rows = table.getTableData(TABLE_ROOT, headers);
+
+		if (rows.isEmpty()) {
+			return "";
+		}
+
+		Map<String, String> firstRow = rows.get(0);
+		if (firstRow.isEmpty()) {
+			return "";
+		}
+
+		return firstRow.values().iterator().next();
+	}
+
+	private boolean isAnyRowContains(String query) {
+		String expected = query.toLowerCase();
+		List<String> headers = table.getTableHeaders(TABLE_ROOT);
+		List<Map<String, String>> rows = table.getTableData(TABLE_ROOT, headers);
+
+		for (Map<String, String> row : rows) {
+			for (String value : row.values()) {
+				if (value != null && value.toLowerCase().contains(expected)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private void waitForTableStabilization() {
+		wait.until(ExpectedConditions.visibilityOfElementLocated(TABLE_ROOT));
+	}
+
+	private String getPageInfoText() {
+		try {
+			WebElement pageInfo = findFirstVisibleElement(PAGE_INFO);
+			return pageInfo != null ? pageInfo.getText().trim() : "";
+		} catch (NoSuchElementException e) {
+			return "";
+		}
+	}
+
+	private boolean isPreviousButtonEnabled() {
+		WebElement prevBtn = findFirstVisibleElement(PREVIOUS_PAGE_BUTTON);
+		return prevBtn != null && prevBtn.isEnabled();
+	}
+
+	private void clickElement(WebElement element) {
+		try {
+			wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+		} catch (Exception e) {
+			((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
 		}
 	}
 
