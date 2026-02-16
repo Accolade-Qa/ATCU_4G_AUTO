@@ -16,6 +16,7 @@ public class MyAis140TicketsPageTest extends TestBase {
 	private ExcelUtility excel;
 	private SoftAssert softAssert;
 	private Executor executor;
+	private String apiTicketNo;
 
 	@Override
 	@BeforeClass
@@ -56,7 +57,17 @@ public class MyAis140TicketsPageTest extends TestBase {
 
 	@Test(priority = 4)
 	public void testSearchBoxVisible() {
-		executor.executeTest("Validate ticket search box visibility", true, () -> page.ClickSearchBox() != null);
+		executor.executeTest("Validate ticket search with API-generated ticket", true, () -> {
+			WebElement searchBox = page.ClickSearchBox();
+			if (searchBox == null) {
+				return false;
+			}
+			if (apiTicketNo == null || apiTicketNo.isBlank()) {
+				apiTicketNo = page.generateAisTicketFromApi();
+			}
+			String searchedValue = page.searchByTicketNo(apiTicketNo);
+			return searchedValue != null && searchedValue.contains(apiTicketNo);
+		});
 	}
 
 	@Test(priority = 5)

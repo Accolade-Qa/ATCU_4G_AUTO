@@ -1,7 +1,5 @@
 package com.aepl.atcu.pages;
 
-import static io.restassured.RestAssured.given;
-
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -14,8 +12,6 @@ import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -26,21 +22,19 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.aepl.atcu.api.model.AisTicketContext;
+import com.aepl.atcu.api.service.AisTicketService;
 import com.aepl.atcu.locators.MyAis140TicketsPageLocators;
 import com.aepl.atcu.util.PageActionsUtil;
 import com.aepl.atcu.util.RandomGeneratorUtils;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
 
 public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 	private final WebDriver driver;
 	private final WebDriverWait wait;
 	private final PageActionsUtil actions;
 	private final RandomGeneratorUtils randomUtils;
+	private final AisTicketService aisTicketService;
+	private AisTicketContext apiTicketContext;
 	private static final Logger logger = LogManager.getLogger(MyAis140TicketsPage.class);
 
 	public MyAis140TicketsPage(WebDriver driver) {
@@ -48,6 +42,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 		this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		this.actions = new PageActionsUtil(driver, this.wait);
 		this.randomUtils = new RandomGeneratorUtils();
+		this.aisTicketService = new AisTicketService();
 	}
 
 	public String VIN_NO = generateRandomString(17);
@@ -55,19 +50,7 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 	public String Ticket_No; // Global variable to store the generated Ticket Number
 
 	public String GenerateToken() {
-		HashMap<String, String> data = new HashMap<>();
-		data.put("username", "accoladeCrm");
-		data.put("password", "admin@123");
-
-		Response response = given().contentType("application/json").body(data).when()
-				.post("http://20.219.88.214:6109/api/crm/generateToken").then().statusCode(200).log().all().extract()
-				.response();
-
-		// Extract the token from the response and assign it to the token variable
-		String token = response.jsonPath().getString("token");
-
-		// Return the token
-		return token;
+		return aisTicketService.generateToken();
 	}
 
 // Locators Goes here
@@ -169,120 +152,30 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 
 //	@Test(priority = 2)
 	void SaveCRMData() {
-		RestAssured.baseURI = "http://20.219.88.214:6109";
-
-		// Inside your SaveCRMData method
-		JSONArray jsonArray = new JSONArray();
-		JSONObject jsonObject = new JSONObject();
-
-		// Add your data to the JSON object
-		jsonObject.put("VIN_NO", VIN_NO);
-		jsonObject.put("ICCID", ICCID);
-		jsonObject.put("UIN_NO", generateRandomString(19));
-		jsonObject.put("DEVICE_IMEI", generateRandomNumber(15));
-		jsonObject.put("DEVICE_MAKE", "Accolade");
-		jsonObject.put("DEVICE_MODEL", "AEPL051400");
-		jsonObject.put("ENGINE_NO", generateRandomString(50));
-		jsonObject.put("REG_NUMBER", generateRandomString(15));
-		jsonObject.put("VEHICLE_OWNER_FIRST_NAME", generateRandomString(15));
-		jsonObject.put("VEHICLE_OWNER_MIDDLE_NAME", generateRandomString(15));
-		jsonObject.put("VEHICLE_OWNER_LAST_NAME", generateRandomString(15));
-		jsonObject.put("ADDRESS_LINE_1", generateRandomString(20));
-		jsonObject.put("ADDRESS_LINE_2", generateRandomString(15));
-		jsonObject.put("VEHICLE_OWNER_CITY", generateRandomString(15));
-		jsonObject.put("VEHICLE_OWNER_DISTRICT", generateRandomString(15));
-		jsonObject.put("VEHICLE_OWNER_STATE", generateRandomString(15));
-		jsonObject.put("VEHICLE_OWNER_COUNTRY", generateRandomString(15));
-		jsonObject.put("VEHICLE_OWNER_PINCODE", generateRandomNumber(6));
-		jsonObject.put("VEHICLE_OWNER_REGISTERED_MOBILE", generateRandomNumber(10));
-		jsonObject.put("DEALER_CODE", generateRandomNumber(6));
-		jsonObject.put("POS_CODE", generateRandomString(15));
-		jsonObject.put("POA_DOC_NAME", generateRandomString(15));
-		jsonObject.put("POA_DOC_NO", generateRandomString(15));
-		jsonObject.put("POI_DOC_TYPE", generateRandomString(15));
-		jsonObject.put("POI_DOC_NO", generateRandomString(15));
-		jsonObject.put("RTO_OFFICE_CODE", generateRandomString(15));
-		jsonObject.put("RTO_STATE", generateRandomString(15));
-		jsonObject.put("PRIMARY_OPERATOR", "BSNL");
-		jsonObject.put("SECONDARY_OPERATOR", "BHA");
-		jsonObject.put("PRIMARY_MOBILE_NUMBER", generateRandomNumber(15));
-		jsonObject.put("SECONDARY_MOBILE_NUMBER", generateRandomNumber(15));
-		jsonObject.put("VEHICLE_MODEL", generateRandomString(15));
-		jsonObject.put("COMMERCIAL_ACTIVATION_START_DATE", generateYesterdayDate());
-		jsonObject.put("COMMERCIAL_ACTIVATION_EXPIRY_DATE", generateFutureDate());
-		jsonObject.put("MFG_YEAR", generateRandomYear(4));
-		jsonObject.put("INVOICE_DATE", generateRandomDate());
-		jsonObject.put("INVOICE_NUMBER", generateRandomString(15));
-		jsonObject.put("CERTIFICATE_VALIDITY_DURATION_IN_YEAR", generateRandomNumber(1));
-
-		// Add the JSON object to the JSON array
-		jsonArray.put(jsonObject);
-
-		// Convert the JSON array to a string
-		String requestBodyCRM = jsonArray.toString();
-
-		// Send POST request to the API endpoint
-		String token = GenerateToken();
-		RequestSpecification request = RestAssured.given();
-		request.header("Content-Type", "application/json");
-		request.header("token", token);
-		request.body(requestBodyCRM);
-
-		io.restassured.response.Response responseCRM = request.post("api/crm/generateTickets");
-
-		// Use Gson to pretty print the JSON request body
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		String prettyJson = gson.toJson(gson.fromJson(requestBodyCRM, Object.class));
-
-		System.out.println("Request Body:");
-		System.out.println(prettyJson);
-		String requestBody1 = responseCRM.getBody().prettyPrint();
+		apiTicketContext = aisTicketService.generateAndFetchTicket();
+		if (apiTicketContext != null) {
+			this.VIN_NO = apiTicketContext.getVinNo();
+			this.ICCID = apiTicketContext.getIccid();
+			this.Ticket_No = apiTicketContext.getTicketNo();
+		}
 	}
 
 //	@Test(priority = 3)
 	public void testGetTicketStatus() {
-		// Specify the base URI for the API
-		RestAssured.baseURI = "http://20.219.88.214:6109";
+		SaveCRMData();
+	}
 
-		JSONArray jsonArray = new JSONArray();
-		JSONObject jsonObject = new JSONObject();
+	public String generateAisTicketFromApi() {
+		SaveCRMData();
+		return Ticket_No;
+	}
 
-		// Add your data to the JSON object
-		jsonObject.put("VIN_NO", VIN_NO);
-		jsonObject.put("ICCID", ICCID);
-
-		// Add the JSON object to the JSON array
-		jsonArray.put(jsonObject);
-
-		// Convert the JSON array to a string
-		String requestBodyGET = jsonArray.toString();
-
-		// Print the request body before sending the request
-		System.out.println("Request Body:");
-		System.out.println(requestBodyGET);
-
-		// Send POST request to the API endpoint
-		String token = GenerateToken();
-		RequestSpecification request = RestAssured.given();
-		request.header("Content-Type", "application/json");
-		request.header("token", token);
-		request.body(requestBodyGET);
-
-		io.restassured.response.Response responseGET = request.post("/api/crm/getTicketStatus");
-
-		// Print the response status code
-		System.out.println("Response Status Code: " + responseGET.getStatusCode());
-		System.out.println("Request Body:");
-		System.out.println(requestBodyGET);
-		String requestBodyGET1 = responseGET.getBody().prettyPrint();
-
-		// Extract the ticket number from the response body using JSONPath
-		Ticket_No = responseGET.jsonPath().getString("data[0].Ticket_No");
-
-		// Print or log the extracted ticket number
-		System.out.println("Ticket Number: " + Ticket_No);
-
-//		 return TicketNo;
+	public String searchByTicketNo(String ticketNo) {
+		WebElement search = actions.waitForVisibility(SearchBox);
+		search.clear();
+		search.sendKeys(ticketNo);
+		search.sendKeys(Keys.ENTER);
+		return search.getAttribute("value");
 	}
 
 	public void clickNavBar() {

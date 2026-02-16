@@ -27,6 +27,8 @@ target/
 # === Sensitive or Config Files ===
 # Ignore properties and configuration files (if sensitive)
 src/main/resources/*.properties
+.env
+.env.local
 
 # === Git Specific ===
 # Ignore Git specific files
