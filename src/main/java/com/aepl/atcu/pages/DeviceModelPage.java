@@ -15,10 +15,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.aepl.atcu.locators.DeviceModelPageLocators;
+import static com.aepl.atcu.locators.DeviceModelPageLocators.*;
 import com.aepl.atcu.util.PageActionsUtil;
 
-public class DeviceModelPage extends DeviceModelPageLocators {
+public class DeviceModelPage {
 	// Global variables
 	private final WebDriver driver;
 	private final WebDriverWait wait;
@@ -232,3 +232,4 @@ public class DeviceModelPage extends DeviceModelPageLocators {
 		}
 	}
 }
+

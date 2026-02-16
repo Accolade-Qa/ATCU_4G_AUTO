@@ -19,3 +19,4 @@ public class DeviceDashboardPageLocators {
 	public static final By KPI_CARDS = By.xpath("//div[contains(@class,'kpi-section')]/div");
 	public static final By COMPONENT_TITLE = By.cssSelector(".component-title");
 }
+

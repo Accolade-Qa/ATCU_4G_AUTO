@@ -18,10 +18,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.aepl.atcu.locators.DealerFotaPageLocators;
+import static com.aepl.atcu.locators.DealerFotaPageLocators.*;
 import com.aepl.atcu.util.PageActionsUtil;
 
-public class DealearFotaPage extends DealerFotaPageLocators {
+public class DealearFotaPage {
 	private final WebDriver driver;
 	private final WebDriverWait wait;
 	private final PageActionsUtil commonMethod;
@@ -269,4 +269,5 @@ public class DealearFotaPage extends DealerFotaPageLocators {
 		return alertMessage;
 	}
 }
+
 

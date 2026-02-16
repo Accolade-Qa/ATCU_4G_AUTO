@@ -12,13 +12,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.aepl.atcu.locators.LoginPageLocators;
+import static com.aepl.atcu.locators.LoginPageLocators.*;
 import com.aepl.atcu.util.ConfigProperties;
 import com.aepl.atcu.util.Constants;
 import com.aepl.atcu.util.EmailReader;
 import com.aepl.atcu.util.PageActionsUtil;
 
-public class LoginPage extends LoginPageLocators {
+public class LoginPage {
 	private final WebDriver driver;
 	private final WebDriverWait wait;
 	private final PageActionsUtil comm;
@@ -240,17 +240,17 @@ public class LoginPage extends LoginPageLocators {
 			logger.debug("After click, password field type: {}", afterType);
 
 			if (beforeType.equalsIgnoreCase("password") && afterType.equalsIgnoreCase("text")) {
-				logger.info("✅ Password visibility toggled ON successfully.");
+				logger.info("âœ… Password visibility toggled ON successfully.");
 				return true;
 			} else if (beforeType.equalsIgnoreCase("text") && afterType.equalsIgnoreCase("password")) {
-				logger.info("✅ Password visibility toggled OFF successfully.");
+				logger.info("âœ… Password visibility toggled OFF successfully.");
 				return true;
 			} else {
-				logger.warn("⚠️ Eye icon click did not toggle password visibility.");
+				logger.warn("âš ï¸ Eye icon click did not toggle password visibility.");
 				return false;
 			}
 		} catch (Exception e) {
-			logger.error("❌ Error while verifying eye icon click: {}", e.getMessage(), e);
+			logger.error("âŒ Error while verifying eye icon click: {}", e.getMessage(), e);
 			return false;
 		}
 	}
@@ -265,17 +265,17 @@ public class LoginPage extends LoginPageLocators {
 			boolean isEnabled = forgotPasswordLink.isEnabled();
 
 			if (isDisplayed && isEnabled) {
-				logger.info("✅ 'Forgot Password' link is present and enabled.");
+				logger.info("âœ… 'Forgot Password' link is present and enabled.");
 				return true;
 			} else {
-				logger.warn("⚠️ 'Forgot Password' link is either not visible or disabled.");
+				logger.warn("âš ï¸ 'Forgot Password' link is either not visible or disabled.");
 				return false;
 			}
 		} catch (NoSuchElementException e) {
-			logger.error("❌ 'Forgot Password' link not found: {}", e.getMessage());
+			logger.error("âŒ 'Forgot Password' link not found: {}", e.getMessage());
 			return false;
 		} catch (Exception e) {
-			logger.error("❌ Unexpected error while checking 'Forgot Password' link: {}", e.getMessage(), e);
+			logger.error("âŒ Unexpected error while checking 'Forgot Password' link: {}", e.getMessage(), e);
 			return false;
 		}
 	}
@@ -300,3 +300,4 @@ public class LoginPage extends LoginPageLocators {
 		return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 	}
 }
+

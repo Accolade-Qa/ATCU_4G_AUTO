@@ -15,9 +15,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
 
-import com.aepl.atcu.locators.CommonPageLocators;
+import static com.aepl.atcu.locators.CommonPageLocators.*;
 
-public class PageAssertionsUtil extends CommonPageLocators {
+public class PageAssertionsUtil {
 
 	private static final Logger logger = LogManager.getLogger(PageAssertionsUtil.class);
 
@@ -121,3 +121,4 @@ public class PageAssertionsUtil extends CommonPageLocators {
 		}
 	}
 }
+

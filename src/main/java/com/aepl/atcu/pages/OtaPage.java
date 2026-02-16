@@ -15,12 +15,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.aepl.atcu.locators.OtaPageLocators;
+import static com.aepl.atcu.locators.OtaPageLocators.*;
 import com.aepl.atcu.util.CalendarActions;
 import com.aepl.atcu.util.MouseActions;
 import com.aepl.atcu.util.PageActionsUtil;
 
-public class OtaPage extends OtaPageLocators {
+public class OtaPage {
 
 	// Global variables
 	private final WebDriver driver;
@@ -372,7 +372,7 @@ public class OtaPage extends OtaPageLocators {
 		try {
 			commonMethod.checkSearchBox(searchInput);
 
-			WebElement editButton = wait.until(ExpectedConditions.visibilityOfElementLocated(this.editButtonOfOta));
+			WebElement editButton = wait.until(ExpectedConditions.visibilityOfElementLocated(editButtonOfOta));
 			editButton.click();
 
 			String updateMessage = fillAndSubmitOtaForm("update");
@@ -425,4 +425,5 @@ public class OtaPage extends OtaPageLocators {
 	}
 
 }
+
 

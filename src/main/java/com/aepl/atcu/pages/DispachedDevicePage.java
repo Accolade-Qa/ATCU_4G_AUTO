@@ -16,11 +16,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.aepl.atcu.locators.DispatchedDevicePageLocators;
+import static com.aepl.atcu.locators.DispatchedDevicePageLocators.*;
 import com.aepl.atcu.util.PageActionsUtil;
 import com.aepl.atcu.util.MouseActions;
 
-public class DispachedDevicePage extends DispatchedDevicePageLocators {
+public class DispachedDevicePage {
 
 	// Global variables
 	private final WebDriver driver;
@@ -119,3 +119,4 @@ public class DispachedDevicePage extends DispatchedDevicePageLocators {
 		}
 	}
 }
+

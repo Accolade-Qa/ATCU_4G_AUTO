@@ -24,11 +24,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.aepl.atcu.api.model.AisTicketContext;
 import com.aepl.atcu.api.service.AisTicketService;
-import com.aepl.atcu.locators.MyAis140TicketsPageLocators;
+import static com.aepl.atcu.locators.MyAis140TicketsPageLocators.*;
 import com.aepl.atcu.util.PageActionsUtil;
 import com.aepl.atcu.util.RandomGeneratorUtils;
 
-public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
+public class MyAis140TicketsPage {
 	private final WebDriver driver;
 	private final WebDriverWait wait;
 	private final PageActionsUtil actions;
@@ -1548,4 +1548,5 @@ public class MyAis140TicketsPage extends MyAis140TicketsPageLocators {
 	}
 	
 }
+
 

@@ -14,11 +14,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.aepl.atcu.locators.ChangeMobilePageLocators;
+import static com.aepl.atcu.locators.ChangeMobilePageLocators.*;
 import com.aepl.atcu.util.Constants;
 import com.aepl.atcu.util.PageActionsUtil;
 
-public class ChangeMobilePage extends ChangeMobilePageLocators {
+public class ChangeMobilePage {
 	private final WebDriver driver;
 	private final WebDriverWait wait;
 	private final PageActionsUtil pageActionsUtil;
@@ -168,3 +168,4 @@ public class ChangeMobilePage extends ChangeMobilePageLocators {
 		}
 	}
 }
+

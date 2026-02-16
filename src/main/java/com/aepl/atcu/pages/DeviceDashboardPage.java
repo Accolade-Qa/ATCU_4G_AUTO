@@ -15,12 +15,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.aepl.atcu.locators.DeviceDashboardPageLocators;
+import static com.aepl.atcu.locators.DeviceDashboardPageLocators.*;
 import com.aepl.atcu.util.MouseActions;
 import com.aepl.atcu.util.PageActionsUtil;
 import com.aepl.atcu.util.TableUtils;
 
-public class DeviceDashboardPage extends DeviceDashboardPageLocators {
+public class DeviceDashboardPage {
 	private final WebDriver driver;
 	private final WebDriverWait wait;
 	private final PageActionsUtil common;
@@ -55,16 +55,16 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 
 			for (int i = 0; i < totalCards; i++) {
 
-				// 🔼 STEP 1: Scroll back to top BEFORE locating card again
+				// ðŸ”¼ STEP 1: Scroll back to top BEFORE locating card again
 				((JavascriptExecutor) driver).executeScript("window.scrollTo(0,0);");
 
-				// 🔄 STEP 2: Re-fetch cards because DOM changed after click
+				// ðŸ”„ STEP 2: Re-fetch cards because DOM changed after click
 				List<WebElement> cards = wait.until(ExpectedConditions
 						.visibilityOfAllElementsLocatedBy(By.xpath("//div[contains(@class,'kpi-section')]/div")));
 
 				WebElement card = cards.get(i);
 
-				// 🎯 STEP 3: Scroll card to center to avoid header overlap
+				// ðŸŽ¯ STEP 3: Scroll card to center to avoid header overlap
 				((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", card);
 
 				wait.until(ExpectedConditions.elementToBeClickable(card));
@@ -76,14 +76,14 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 
 				logger.info("Clicking Card -> " + cardName + " | Count -> " + cardValue);
 
-				// 🖱 STEP 4: Click with fallback
+				// ðŸ–± STEP 4: Click with fallback
 				try {
 					card.click();
 				} catch (ElementClickInterceptedException e) {
 					((JavascriptExecutor) driver).executeScript("arguments[0].click();", card);
 				}
 
-				// 📊 STEP 5: Validate table header
+				// ðŸ“Š STEP 5: Validate table header
 				WebElement tableHeader = wait
 						.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".component-title")));
 
@@ -534,4 +534,5 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 	}
 
 }
+
 

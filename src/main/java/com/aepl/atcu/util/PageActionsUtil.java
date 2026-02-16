@@ -24,9 +24,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.aepl.atcu.locators.CommonPageLocators;
+import static com.aepl.atcu.locators.CommonPageLocators.*;
 
-public class PageActionsUtil extends CommonPageLocators {
+public class PageActionsUtil {
 
 	private static final Logger logger = LogManager.getLogger(PageActionsUtil.class);
 
@@ -198,3 +198,4 @@ public class PageActionsUtil extends CommonPageLocators {
 		return UUID.randomUUID().toString().replace("-", "").substring(0, 12).toUpperCase(Locale.ROOT);
 	}
 }
+
