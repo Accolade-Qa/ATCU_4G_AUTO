@@ -25,7 +25,7 @@ public class EmailReader {
 		String username = ConfigProperties.getProperty("username");
 		String password = ConfigProperties.getProperty("password");
 
-		logger.info("Connecting to Outlook with username={}, password length={}", username,
+		logger.info("Connecting to Outlook using configured mailbox. password length={}",
 				password == null ? 0 : password.length());
 
 		Properties props = new Properties();
