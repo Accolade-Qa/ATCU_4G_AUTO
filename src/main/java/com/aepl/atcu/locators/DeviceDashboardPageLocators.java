@@ -18,5 +18,13 @@ public class DeviceDashboardPageLocators {
 	public static final By PAGE_NUMBER_BUTTONS = By.xpath("//div[contains(@class,'currentPage-numbers')]//button[not(@disabled)]");
 	public static final By KPI_CARDS = By.xpath("//div[contains(@class,'kpi-section')]/div");
 	public static final By COMPONENT_TITLE = By.cssSelector(".component-title");
+	public static final By GRAPH_WIDGETS = By.xpath(
+			"//div[contains(@class,'graph') or contains(@class,'chart') or contains(@class,'apexcharts-canvas') or contains(@class,'highcharts-container')]");
+	public static final By GRAPH_TITLE_INNER = By
+			.xpath(".//*[self::h1 or self::h2 or self::h3 or self::h4 or self::h5 or contains(@class,'title')]");
+	public static final By GRAPH_LEGEND_INNER = By.xpath(
+			".//*[contains(@class,'legend') or contains(@class,'apexcharts-legend') or contains(@class,'highcharts-legend')]");
+	public static final By GRAPH_TOOLTIP_GENERIC = By.xpath(
+			"//*[contains(@class,'tooltip') or contains(@class,'apexcharts-tooltip') or contains(@class,'highcharts-tooltip')]");
 }
 

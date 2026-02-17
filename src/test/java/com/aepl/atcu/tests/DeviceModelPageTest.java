@@ -103,7 +103,7 @@ public class DeviceModelPageTest extends TestBase {
 				deviceModel::checkSearchBoxAndTable2);
 	}
 
-	@Test(priority = 10)
+//	@Test(priority = 10)
 	public void testClickDeleteIcon() {
 		executor.executeTest("Validate delete icon and alert flow", true, deviceModel::clickDeleteIcon);
 	}

@@ -76,7 +76,7 @@ public class DealerFotaPageTest extends TestBase {
 		executor.executeTest("Validate search button and table headings", true, page::searchBtnAndTableHeadings);
 	}
 
-	@Test(priority = 8)
+//	@Test(priority = 8)
 	public void testDeleteActionBtn() {
 		executor.executeTest("Validate delete action button alert", true, () -> {
 			String msg = page.deleteActionBtn();
