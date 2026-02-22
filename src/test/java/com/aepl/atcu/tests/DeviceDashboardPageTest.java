@@ -13,22 +13,6 @@ import com.aepl.atcu.util.ExcelUtility;
 import com.aepl.atcu.util.PageAssertionsUtil;
 
 public class DeviceDashboardPageTest extends TestBase {
-
-	private static final String SHEET = "Device_Dashboard_Page_Test";
-	private static final String EXP_TITLE = "AEPL TCU4G QA Diagnostic Cloud";
-	private static final String EXP_NAV = "Link is verified";
-	private static final String EXP_COMPONENTS = "All components are displayed and validated successfully.";
-	private static final String EXP_BUTTONS = "All buttons are displayed and enabled successfully.";
-
-	private static final List<String> HEADERS_PRODUCTION = List.of("UIN NO.", "IMEI NO.", "ICCID NO.", "MODEL NAME.",
-			"ACTION");
-	private static final List<String> HEADERS_DISPATCHED = List.of("UIN NO.", "IMEI NO.", "ICCID NO.", "MODEL NAME.",
-			"CUSTOMER NAME", "ACTION");
-	private static final List<String> HEADERS_INSTALLED = List.of("UIN NO.", "IMEI NO.", "ICCID NO.", "CHASSIS NO.",
-			"MODEL NAME.", "CUSTOMER NAME", "ACTION");
-	private static final List<String> HEADERS_DISCARDED = List.of("UIN NO.", "IMEI NO.", "ICCID NO.", "CHASSIS NO.",
-			"MODEL NAME.", "INSTALLED AT", "DISCARDED AT", "ACTION");
-
 	private DeviceDashboardPage page;
 	private PageAssertionsUtil assertions;
 	private ExcelUtility excel;
@@ -44,7 +28,7 @@ public class DeviceDashboardPageTest extends TestBase {
 		this.softAssert = new SoftAssert();
 		this.excel = new ExcelUtility();
 		this.executor = new Executor(excel, softAssert);
-		this.excel.initializeExcel(SHEET);
+		this.excel.initializeExcel("Device_Dashboard_Page_Test");
 		logger.info("Setup completed for DeviceDashboardPageTest.");
 	}
 
@@ -55,22 +39,26 @@ public class DeviceDashboardPageTest extends TestBase {
 
 	@Test(priority = 2)
 	public void testPageTitle() {
-		executor.executeTest("Verify Page Title", EXP_TITLE, assertions::verifyPageTitle);
+		final String expTitle = "AEPL TCU4G QA Diagnostic Cloud";
+		executor.executeTest("Verify Page Title", expTitle, assertions::verifyPageTitle);
 	}
 
 	@Test(priority = 3)
 	public void testClickNavBar() {
-		executor.executeTest("Verify Navigation Bar Link", EXP_NAV, page::clickNavBar);
+		final String expNav = "Link is verified";
+		executor.executeTest("Verify Navigation Bar Link", expNav, page::clickNavBar);
 	}
 
 	@Test(priority = 4)
 	public void testValidateComponents() {
-		executor.executeTest("Validate Components", EXP_COMPONENTS, assertions::validateComponents);
+		final String expComponents = "All components are displayed and validated successfully.";
+		executor.executeTest("Validate Components", expComponents, assertions::validateComponents);
 	}
 
 	@Test(priority = 5)
 	public void testValidateButtons() {
-		executor.executeTest("Validate Buttons", EXP_BUTTONS, assertions::validateButtons);
+		final String expButtons = "All buttons are displayed and enabled successfully.";
+		executor.executeTest("Validate Buttons", expButtons, assertions::validateButtons);
 	}
 
 	@Test(priority = 6)
@@ -80,7 +68,9 @@ public class DeviceDashboardPageTest extends TestBase {
 
 	@Test(priority = 10)
 	public void testCard1Headers() {
-		executor.executeTest("Total Production Devices Headers", HEADERS_PRODUCTION,
+		final List<String> headersProduction = List.of("UIN NO.", "IMEI NO.", "ICCID NO.", "MODEL NAME.",
+				"ACTION");
+		executor.executeTest("Total Production Devices Headers", headersProduction,
 				() -> page.getTableHeadersForKpiCard(1));
 	}
 
@@ -115,7 +105,9 @@ public class DeviceDashboardPageTest extends TestBase {
 
 	@Test(priority = 20)
 	public void testCard2Headers() {
-		executor.executeTest("Total Dispatched Devices Headers", HEADERS_DISPATCHED,
+		final List<String> headersDispatched = List.of("UIN NO.", "IMEI NO.", "ICCID NO.", "MODEL NAME.",
+				"CUSTOMER NAME", "ACTION");
+		executor.executeTest("Total Dispatched Devices Headers", headersDispatched,
 				() -> page.getTableHeadersForKpiCard(2));
 	}
 
@@ -150,7 +142,9 @@ public class DeviceDashboardPageTest extends TestBase {
 
 	@Test(priority = 30)
 	public void testCard3Headers() {
-		executor.executeTest("Total Installed Devices Headers", HEADERS_INSTALLED,
+		final List<String> headersInstalled = List.of("UIN NO.", "IMEI NO.", "ICCID NO.", "CHASSIS NO.",
+				"MODEL NAME.", "CUSTOMER NAME", "ACTION");
+		executor.executeTest("Total Installed Devices Headers", headersInstalled,
 				() -> page.getTableHeadersForKpiCard(3));
 	}
 
@@ -185,7 +179,9 @@ public class DeviceDashboardPageTest extends TestBase {
 
 	@Test(priority = 40)
 	public void testCard4Headers() {
-		executor.executeTest("Total Discarded Devices Headers", HEADERS_DISCARDED,
+		final List<String> headersDiscarded = List.of("UIN NO.", "IMEI NO.", "ICCID NO.", "CHASSIS NO.",
+				"MODEL NAME.", "INSTALLED AT", "DISCARDED AT", "ACTION");
+		executor.executeTest("Total Discarded Devices Headers", headersDiscarded,
 				() -> page.getTableHeadersForKpiCard(4));
 	}
 
@@ -270,8 +266,7 @@ public class DeviceDashboardPageTest extends TestBase {
 	}
 
 	@Test(priority = 99)
-	public void 
-	testVersion() {
+	public void testVersion() {
 		executor.executeTest("Verify Application Version", true, () -> !assertions.checkVersion().isBlank());
 	}
 
