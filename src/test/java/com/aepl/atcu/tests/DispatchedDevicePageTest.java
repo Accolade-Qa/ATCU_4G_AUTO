@@ -76,7 +76,8 @@ public class DispatchedDevicePageTest extends TestBase {
 	@Test(priority = 6)
 	public void testFileUpload() {
 		executor.executeTest("Validate dispatch sample upload", true, () -> {
-			String directory = "C:\\Users\\Dhananjay Jagtap\\Downloads";
+			// should be currunt location + java/test/resources/Sample_upload.file.abc
+			String directory = System.getProperty("user.dir") + "/src/test/resources/";
 			String filePrefix = "Sample_Dispatch_Sheet";
 			try {
 				dispatchedDevice.uploadFile(directory, filePrefix);

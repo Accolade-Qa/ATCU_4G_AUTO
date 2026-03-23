@@ -10,7 +10,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 
 import com.aepl.atcu.locators.LoginPageLocators;
@@ -30,7 +29,7 @@ public class TestBase {
 
 	protected final Logger logger = LogManager.getLogger(this.getClass());
 
-	@BeforeClass
+	@BeforeMethod
 	public void setUp() {
 		logger.info("========== Test Suite Setup Started ==========");
 		if (driver == null) {
